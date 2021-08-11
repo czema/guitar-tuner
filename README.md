@@ -1,22 +1,24 @@
-Download Raspberry Pi OS Lite.
-Using Raspberry Pi Imager, choose the Lite image and select the SD card, click Write.
+## Giant Guitar Tuner ##
 
-Mount the boot drive and make the following changes to config.txt:
+### Setup and Installation ###
 
-Comment out dtparam=audio=on
-Add:
+* Download Raspberry Pi OS Lite.
+* Using Raspberry Pi Imager, choose the Lite image and select the SD card, click Write.
+* Mount the boot drive and make the following changes to config.txt:
+** Comment out dtparam=audio=on
+** Add
+```
   disable_splash=1
   dtoverlay=pi3-disable-bt
   dtoverlay=sdtweak,overclock_50=100
   boot_delay=0
   dtoverlay=gpio-shutdown
+```
+* Unmount and remove the SD card.
+* Boot rapsi, press enter if it seems to hang at "Update UTMP about System Runlevel Changes."
+* Default username/password: pi/raspberry
 
-Unmount and remove the SD card.
-
-Boot rapsi, press enter if it seems to hang at "Update UTMP about System Runlevel Changes."
-Username/password: pi/raspberry
-
-Configure the Pi.
+### Configure the Pi. ###
 
 `sudo raspi-config`
 
