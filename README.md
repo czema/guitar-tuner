@@ -47,22 +47,31 @@ Install Git, cmake, pigpio.
 git clone https://github.com/czema/guitar-tuner
 cd guitar-tuner
 sudo ./configure.sh
-cd src
 sudo ./compile.sh
-cd ..
+sudo ./install.sh
+cd bin
 ./guitar-tuner
 ```
 
-It should say something like "SPI: FT4222 SPI Slave OK, Running..."
+It should say something like "SPI: FT4222 SPI Slave OK, Running."
 
 Press Ctrl+C to close the program.
 
-Install the service.
-`sudo ./src/service.sh`
+### Hardware Notes ###
+https://pinout.xyz/
 
-Notes:
- To resize the terminal, `nano .profile` and add:
-```
+Pin #02 - 5V
+Pin #05 - GPIO3 (active low, power on/off)
+Pin #06 - GND
+Pin #08 - TX (serial console)
+Pin #10 - RX (serial console)
+Pin #12 - GPIO18 (PWM LED data)
+Pin #14 - GND
+
+### Generic Raspberry Pi Notes ###
+
+* To resize the terminal, `nano .profile` and add:
+```bash
 if [[ "$(tty)" == "/dev/tty1" ]] ; then
         # commands in here only execute on local console.
         echo -e "\033[1,33mWelcome.\033[0m"
@@ -70,5 +79,4 @@ else
         stty rows 60 cols 160
 fi
 ```
-
-The gpio-shutdown dtoverlay (config.txt) allows connecting GPIO 3 to GND to safely shut down the computer.  The rpi comes pre-configured to allow GPIO 3 to GND to power up the computer.
+* The gpio-shutdown dtoverlay (config.txt) allows connecting GPIO 3 to GND to safely shut down the computer.  The rpi comes pre-configured to allow GPIO 3 to GND to power up the computer.
