@@ -4,7 +4,7 @@ if [[ "$EUID" -ne 0 ]]; then
 	exit 1
 fi
 cd deps/libft4222/
-bash install.sh
+./install4222.sh
 cd examples
 cc get-version.c -lft4222 -Wl,-rpath,/usr/local/lib -o get-version
 ./get-version
