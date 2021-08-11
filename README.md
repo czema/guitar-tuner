@@ -48,7 +48,6 @@ git clone https://github.com/czema/guitar-tuner
 cd guitar-tuner
 sudo ./configure.sh
 sudo ./compile.sh
-sudo ./install.sh
 cd bin
 ./guitar-tuner
 ```
@@ -57,9 +56,12 @@ It should say something like "SPI: FT4222 SPI Slave OK, Running."
 
 Press Ctrl+C to close the program.
 
+To start the application as a service, run `sudo ./install.sh`
+
 ### Hardware Notes ###
 https://pinout.xyz/
 
+```
 Pin #02 - 5V
 Pin #05 - GPIO3 (active low, power on/off)
 Pin #06 - GND
@@ -67,6 +69,7 @@ Pin #08 - TX (serial console)
 Pin #10 - RX (serial console)
 Pin #12 - GPIO18 (PWM LED data)
 Pin #14 - GND
+```
 
 ### Generic Raspberry Pi Notes ###
 
