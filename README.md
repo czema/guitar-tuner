@@ -66,19 +66,19 @@ Pin #02 - 5V
 Pin #05 - GPIO3 (active low, power on/off)
 Pin #06 - GND
 Pin #08 - TX (serial console)
+Pin #09 - GND (power on/off)
 Pin #10 - RX (serial console)
 Pin #12 - GPIO18 (PWM LED data)
 Pin #14 - GND
+Pin #16 - GPIO23 (Motion Sensor)
+Pin #18 - GPIO24 (Relay, power supply)
 ```
 
 ### Generic Raspberry Pi Notes ###
 
-* To resize the terminal, `nano .profile` and add:
+* To resize the serial console terminal, `nano .profile` and add:
 ```bash
-if [[ "$(tty)" == "/dev/tty1" ]] ; then
-        # commands in here only execute on local console.
-        echo -e "\033[1,33mWelcome.\033[0m"
-else
+if [[ "$(tty)" != "/dev/tty1" ]] ; then
         stty rows 60 cols 160
 fi
 ```
