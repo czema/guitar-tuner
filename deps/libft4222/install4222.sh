@@ -1,3 +1,4 @@
+#!/bin/bash
 # Install libft4222 and headers into /usr/local, so run using sudo!
 
 if [ "$(id -u)" != "0" ] ; then
