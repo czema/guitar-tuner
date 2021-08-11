@@ -3,10 +3,7 @@ if [[ "$EUID" -ne 0 ]]; then
 	echo -e "\033[1;31mRoot access required.\033[0m" 2>&1
 	exit 1
 fi
-if [ -d "bin" ]; then
-	echo -e "\033[1;31mSystem has already been configured.\033[0m" 2>&1
-	exit 1
-fi
+[ -d "bin" ] || rm -rf bin
 mkdir bin
 echo -e "\033[1;33mPreparing LibFT4222.\033[0m"
 cd deps/libft4222/
