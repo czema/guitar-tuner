@@ -178,7 +178,8 @@ int spi_reader(char *description) {
 			puts("SPI: Superuser relinquished.");
 
 			printf("SPI: FT4222 SPI Slave OK\n");
-			printf("SPI: Running...\n");
+			printf("SPI: Running.\n");
+			printf("SPI: Press Ctrl+C to quit.\n");
 		}
 	}
 
