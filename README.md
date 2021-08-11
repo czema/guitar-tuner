@@ -45,47 +45,19 @@ Install Git, cmake, pigpio.
 ```bash
 git clone https://github.com/czema/guitar-tuner
 cd guitar-tuner
-cd deps
-cd libft4222
-sudo ./install4222.sh
-cd examples
-cc get-version.c -lft4222 -Wl,-rpath,/usr/local/lib -o get-version
-sudo ./get-version
-```
-
-It should say something like "Device 0: 'FT4222 A'"
-
-Download rpi_ws28x library.  This requires Git.
-
-```
-git clone https://github.com/jgarff/rpi_ws281x.git
-cd rpi_ws281x
-mkdir build
-cd build
-cmake ..
-cmake --build .
-sudo make install
-cd ../..
-```
-
-
-
-Create application.
-
-Using WinSCP, copy the source code to the raspi in ~/app directory.
-
-```
-cd ~/app
-chmod 744 install.sh
-chmod 744 compile.sh
+sudo ./configure.sh
+cd src
 sudo ./compile.sh
+cd ..
+./guitar-tuner
 ```
 
 It should say something like "SPI: FT4222 SPI Slave OK, Running..."
+
 Press Ctrl+C to close the program.
 
 Install the service.
-`sudo ./install.sh`
+`sudo ./src/service.sh`
 
 Notes:
  To resize the terminal, `nano .profile` and add:
