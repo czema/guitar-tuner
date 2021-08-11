@@ -23,6 +23,7 @@
 
 * Localization, WLAN Country - US
 * Localization, Timezone - US, Eastern
+* Locatization, Keyboard - English (US), Other.
 * System, Wireless LAN (configure to allow installing packages and transferring application code). Use Atreyu-24
 * System, Network at Boot (disable to speed bootup).
 * Interface, SSH (enables SFTP and SSH console).
