@@ -66,14 +66,14 @@ https://pinout.xyz/
 ```
 Pin #02 - 5V
 Pin #05 - GPIO3 (active low, power on/off)
-Pin #06 - GND
+Pin #06 - GND (power on/off)
 Pin #08 - TX (serial console)
-Pin #09 - GND (power on/off)
+Pin #09 - GND (serial console)
 Pin #10 - RX (serial console)
 Pin #12 - GPIO18 (PWM LED data)
-Pin #14 - GND
-Pin #16 - GPIO23 (Motion Sensor)
-Pin #18 - GPIO24 (Relay, power supply)
+Pin #14 - GND (LED)
+Pin #16 - GPIO23 (Input, Motion Sensor)
+Pin #18 - GPIO24 (Output, Relay - power supply)
 ```
 
 ### Generic Raspberry Pi Notes ###
