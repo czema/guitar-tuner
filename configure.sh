@@ -3,7 +3,7 @@ if [[ "$EUID" -ne 0 ]]; then
 	echo -e "\033[1;31mRoot access required.\033[0m" 2>&1
 	exit 1
 fi
-[ -d "bin" ] || rm -rf bin
+[ -d "bin" ] && rm -rf bin
 mkdir bin
 echo -e "\033[1;33mPreparing LibFT4222.\033[0m"
 cd deps/libft4222/
@@ -15,8 +15,9 @@ echo -e "\033[1;36mShould have output something like \"Device 0: 'FT4222 A'\"\03
 cd ../..
 echo -e "\033[1;33mPreparing rpi_ws281x.\033[0m"
 [ -d "rpi_ws281x" ] || git clone https://github.com/jgarff/rpi_ws281x.git
-(cd rpi_ws281x; git pull)
-[ -d "build" ] || rm -rf build
+cd rpi_ws281x
+git pull
+[ -d "build" ] && rm -rf build
 mkdir build
 cd build
 cmake ..
