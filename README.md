@@ -77,9 +77,9 @@ Pin #18 - GPIO24 (Relay, power supply)
 ### Generic Raspberry Pi Notes ###
 
 * To resize the serial console terminal, `nano .profile` and add:
-```bash
-if [[ "$(tty)" != "/dev/tty1" ]] ; then
+  ```bash
+  if [[ "$(tty)" != "/dev/tty1" ]] ; then
         stty rows 60 cols 160
-fi
-```
+  fi
+  ```
 * The gpio-shutdown dtoverlay (config.txt) allows connecting GPIO 3 to GND to safely shut down the computer.  The rpi comes pre-configured to allow GPIO 3 to GND to power up the computer.
