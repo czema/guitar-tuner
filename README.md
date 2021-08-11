@@ -2,11 +2,10 @@
 
 ### Setup and Installation ###
 
-* Download Raspberry Pi OS Lite.
-* Using Raspberry Pi Imager, choose the Lite image and select the SD card, click Write.
+* Using Raspberry Pi Imager, choose the `Raspberry Pi OS Lite` image and select the SD card, click Write.
 * Mount the boot drive and make the following changes to config.txt:
-** Comment out dtparam=audio=on
-** Add
+  * Comment out dtparam=audio=on
+  * Add
 ```
   disable_splash=1
   dtoverlay=pi3-disable-bt
