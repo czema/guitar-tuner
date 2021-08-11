@@ -1,5 +1,7 @@
 ## Giant Guitar Tuner ##
 
+Software components to support the operation of a giant guitar tuner display.  See `src/main.c` for a fuller description of the software architecture.
+
 ### Setup and Installation ###
 
 * Using Raspberry Pi Imager, choose the `Raspberry Pi OS Lite` image and select the SD card, click Write.
@@ -82,4 +84,4 @@ Pin #18 - GPIO24 (Relay, power supply)
         stty rows 60 cols 160
   fi
   ```
-* The gpio-shutdown dtoverlay (config.txt) allows connecting GPIO 3 to GND to safely shut down the computer.  The rpi comes pre-configured to allow GPIO 3 to GND to power up the computer.
+* The gpio-shutdown dtoverlay (in config.txt) allows connecting GPIO 3 to GND to safely shut down the computer.  The rpi comes pre-configured to allow GPIO 3 to GND to power up the computer.
