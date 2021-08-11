@@ -1,0 +1,11 @@
+[Unit]
+Description=Guitar Tuner
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/home/pi/guitar-tuner/bin/guitar-tuner
+WorkingDirectory=/home/pi/guitar-tuner/bin
+
+[Install]
+WantedBy=multi-user.target
