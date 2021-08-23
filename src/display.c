@@ -67,7 +67,7 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	//Display_Row(1, 0, 0, 0, 0, 0, row6 & col01, row6 & col02, row6 & col03, row6 & col04, 0, 0, 0, 0, 0, 0, 0, 0);
 	//Display_Row(1, 0, 0, 0, 0, 0, row7 & col01, row7 & col02, row7 & col03, row7 & col04, 0, 0, 0, 0, 0, 0, 0, 0);
 
-	int k = 0;
+	int k = 6;
 
 	// row 11 (bottom)
 	// k = 0
