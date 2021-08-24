@@ -17,7 +17,7 @@ This component sends the virtual display to the WS2812 LED string.
 #define GPIO_PIN                18 // pin #12
 #define DMA                     10
 #define STRIP_TYPE              WS2811_STRIP_RGB	// WS2812/SK6812RGB integrated chip+leds
-#define LED_COUNT               64
+#define LED_COUNT               450
 
 int led_count = LED_COUNT;
 
