@@ -57,7 +57,7 @@ ws2811_led_t dotcolors[] =
     0x00200010,  // pink
 };
 
-LEDS = ledstring.channel[0].leds;
+ws2811_led_t *LEDS = ledstring.channel[0].leds;
 
 int leds_init() {
     ws2811_return_t ret;
