@@ -66,7 +66,7 @@ int leds_init() {
         return ret;
     }
 
-    leds = *ledstring.channel[0].leds;
+    *leds = ledstring.channel[0].leds;
 
     puts("LEDS: RPI_WS281X Initialized.");
 }
