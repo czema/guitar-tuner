@@ -10,6 +10,8 @@ Copyright 2021 Chet Zema
 
 #include <stdint.h>
 
+#include <ws2811/ws2811.h>
+
 #define LED_COUNT 450
 extern ws2811_led_t leds[LED_COUNT];
 
