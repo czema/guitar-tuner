@@ -11,15 +11,14 @@ This component sends the virtual display to the WS2812 LED string.
 
 #include <ws2811/ws2811.h>
 
+#include "leds.h"
+
 #define ARRAY_SIZE(stuff)       (sizeof(stuff) / sizeof(stuff[0]))
 
 #define TARGET_FREQ             WS2811_TARGET_FREQ
 #define GPIO_PIN                18 // pin #12
 #define DMA                     10
 #define STRIP_TYPE              WS2811_STRIP_RGB	// WS2812/SK6812RGB integrated chip+leds
-#define LED_COUNT               450
-
-int led_count = LED_COUNT;
 
 // Configuration for the WS2812 library.
 ws2811_t ledstring =
@@ -46,7 +45,6 @@ ws2811_t ledstring =
     },
 };
 
-int dotspos[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 ws2811_led_t dotcolors[] =
 {
     0x00200000,  // red
@@ -68,6 +66,8 @@ int leds_init() {
         return ret;
     }
 
+    leds = ledstring.channel[0].leds;
+
     puts("LEDS: RPI_WS281X Initialized.");
 }
 
@@ -75,8 +75,8 @@ void clear(void)
 {
     int i;
 
-    for (i = 0; i < led_count; i++) {
-        ledstring.channel[0].leds[i] = 0;
+    for (i = 0; i < LED_COUNT; i++) {
+        leds[i] = 0;
     }
 }
 
@@ -86,17 +86,11 @@ void leds_shutdown(void) {
     ws2811_fini(&ledstring);
 }
 
-int leds_render(uint32_t *data, uint32_t len)
+int leds_render()
 {
     ws2811_return_t ret;
-    int i;
-    int min_count = led_count;
 
-    if (len < led_count) min_count = len;
-
-    for (i = 0; i < min_count; i++) {
-        ledstring.channel[0].leds[i] = data[i];
-    }
+    // Expects the export `leds` array to be populated.
 
     if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
     {
