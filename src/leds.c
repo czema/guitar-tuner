@@ -57,7 +57,7 @@ ws2811_led_t dotcolors[] =
     0x00200010,  // pink
 };
 
-ws2811_led_t *LEDS = ledstring.channel[0].leds;
+ws2811_led_t *LEDS;
 
 int leds_init() {
     ws2811_return_t ret;
@@ -67,6 +67,8 @@ int leds_init() {
         fprintf(stderr, "LEDS: ws2811_init failed: %s\n", ws2811_get_return_t_str(ret));
         return ret;
     }
+
+    LEDS = ledstring.channel[0].leds;
 
     puts("LEDS: RPI_WS281X Initialized.");
 }

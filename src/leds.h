@@ -16,7 +16,7 @@ Copyright 2021 Chet Zema
 extern ws2811_led_t *LEDS;
 
 int leds_init(void);
-int leds_render(void);
+int leds_render();
 void leds_shutdown(void);
 
 #endif
