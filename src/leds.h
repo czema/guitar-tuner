@@ -13,10 +13,10 @@ Copyright 2021 Chet Zema
 #include <ws2811/ws2811.h>
 
 #define LED_COUNT 450
-extern ws2811_led_t *leds;
+extern ws2811_led_t *LEDS;
 
 int leds_init(void);
-int leds_render();
+int leds_render(void);
 void leds_shutdown(void);
 
 #endif

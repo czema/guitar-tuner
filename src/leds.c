@@ -57,6 +57,8 @@ ws2811_led_t dotcolors[] =
     0x00200010,  // pink
 };
 
+LEDS = ledstring.channel[0].leds;
+
 int leds_init() {
     ws2811_return_t ret;
 
@@ -66,8 +68,6 @@ int leds_init() {
         return ret;
     }
 
-    leds = ledstring.channel[0].leds;
-
     puts("LEDS: RPI_WS281X Initialized.");
 }
 
@@ -76,7 +76,7 @@ void clear(void)
     int i;
 
     for (i = 0; i < LED_COUNT; i++) {
-        leds[i] = 0;
+        LEDS[i] = 0;
     }
 }
 
