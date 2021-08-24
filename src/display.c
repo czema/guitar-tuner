@@ -11,7 +11,7 @@ This component interprets the Polytune LEDs state and converts it to a format su
 
 #include "leds.h"
 
-#define NUM_LEDS 64
+#define NUM_LEDS 96
 #define RED   0x00F00000
 #define GREEN 0x0000F000
 #define BLUE  0x000000F0
