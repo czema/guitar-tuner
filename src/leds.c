@@ -34,28 +34,21 @@ ws2811_t ledstring =
             .invert = 0,
             .brightness = 128,
             .strip_type = STRIP_TYPE,
-        },
-        [1] =
-        {
-            .gpionum = 0,
-            .count = 0,
-            .invert = 0,
-            .brightness = 0,
-        },
-    },
+        }
+    }
 };
 
-ws2811_led_t dotcolors[] =
-{
-    0x00200000,  // red
-    0x00201000,  // orange
-    0x00202000,  // yellow
-    0x00002000,  // green
-    0x00002020,  // lightblue
-    0x00000020,  // blue
-    0x00100010,  // purple
-    0x00200010,  // pink
-};
+//ws2811_led_t dotcolors[] =
+//{
+//    0x00200000,  // red
+//    0x00201000,  // orange
+//    0x00202000,  // yellow
+//    0x00002000,  // green
+//    0x00002020,  // lightblue
+//    0x00000020,  // blue
+//    0x00100010,  // purple
+//    0x00200010,  // pink
+//};
 
 ws2811_led_t *LEDS;
 
@@ -92,7 +85,7 @@ int leds_render()
 {
     ws2811_return_t ret;
 
-    // Expects the export `leds` array to be populated.
+    // Expects the export `LEDS` array to be populated.
 
     if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
     {
