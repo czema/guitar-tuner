@@ -251,7 +251,7 @@ int spi_reader(char *description) {
 			if (diff.tv_sec > 1 || diff.tv_usec > 100000) {
 				//printf("R %u.%u\n", diff.tv_sec, diff.tv_usec);
 				// Send the virtual display to the LEDs.
-				//display_render();
+				display_render();
 				display_reset();
 				
 				gettimeofday(&start, NULL);
