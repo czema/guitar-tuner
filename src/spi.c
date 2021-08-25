@@ -203,6 +203,7 @@ int spi_reader(char *description) {
 		timeval_subtract(&diff, &stop, &start);
 
 		if (diff.tv_sec > 1 || diff.tv_usec > 30000) {
+			printf("R %u.%u\n", diff.tv_sec, diff.tv_usec);
 			display_render();
 			display_clear();
 			
