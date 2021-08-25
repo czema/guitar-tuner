@@ -192,7 +192,7 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row6, col12, RED);
 	SET(k, row6, col12, RED);
 
-	k += 8); // Skip 8 leds.
+	k += 8; // Skip 8 leds.
 
 	// row 5
 	SET(k, row5, col17, RED);
