@@ -198,6 +198,19 @@ int spi_reader(char *description) {
 			goto exit;
 		}		
 
+		// Only render every 30ms (thats 33 fps).
+		gettimeofday(&stop, NULL);
+		timeval_subtract(&diff, &stop, &start);
+
+		//if (diff.tv_sec > 1 || diff.tv_usec > 30000) {
+		if (diff.tv_sec > 1) {
+			printf("%u.%u\n", diff.tv_sec, diff.tv_usec);
+			display_render();
+			display_clear();
+			
+			gettimeofday(&start, NULL);
+		}
+
 		if (bytesAvailable == 0) {
 			continue;
 		}
@@ -246,19 +259,6 @@ int spi_reader(char *description) {
 				}
 
 				//display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
-			}
-			
-			// Only render every 30ms (thats 33 fps).
-			gettimeofday(&stop, NULL);
-			timeval_subtract(&diff, &stop, &start);
-
-			//if (diff.tv_sec > 1 || diff.tv_usec > 30000) {
-			if (diff.tv_sec > 1) {
-				printf("%u.%u\n", diff.tv_sec, diff.tv_usec);
-				display_render();
-				display_clear();
-				
-				gettimeofday(&start, NULL);
 			}
 		}
 	}
