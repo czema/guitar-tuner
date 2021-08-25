@@ -203,7 +203,6 @@ int spi_reader(char *description) {
 		timeval_subtract(&diff, &stop, &start);
 
 		if (diff.tv_sec > 1 || diff.tv_usec > 30000) {
-			puts("R");
 			display_render();
 			display_clear();
 			
@@ -257,7 +256,7 @@ int spi_reader(char *description) {
 					continue;
 				}
 
-				//display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
+				display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
 			}
 		}
 	}
