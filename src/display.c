@@ -15,6 +15,9 @@ This component interprets the Polytune LEDs state and converts it to a format su
 #define GREEN 0x0000F000
 #define BLUE  0x000000F0
 
+// If the current LED is already on, leave it on.  Otherwise switch it based on row/col/color.
+#define SET(K, ROW, COL, COLOR) (LEDS[K++] = LEDS[K] == 0 ? (ROW & COL) * COLOR : LEDS[K])
+
 void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	if (q4 != 0) return; // If q4 doesn't hold all zeros then we are out of sync (the device transmits 32 bits but only has 3 HC595's).
 
@@ -62,7 +65,8 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 
 	// unused
 	// k = 0
-	LEDS[k++] = (row7 & col04) * RED;
+	SET(k, row7, col04, RED);
+	//LEDS[k++] = (row7 & col04) * RED;
 	LEDS[k++] = (row7 & col04) * GREEN;
 	LEDS[k++] = (row7 & col03) * BLUE;
 	LEDS[k++] = (row7 & col03) * RED;
