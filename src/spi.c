@@ -248,7 +248,7 @@ int spi_reader(char *description) {
 			gettimeofday(&stop, NULL);
 			timeval_subtract(&diff, &stop, &start);
 	
-			if (diff.tv_sec > 1 || diff.tv_usec > 50000) {
+			if (diff.tv_sec > 1 || diff.tv_usec > 100000) {
 				//printf("R %u.%u\n", diff.tv_sec, diff.tv_usec);
 				// Send the virtual display to the LEDs.
 				display_render();
