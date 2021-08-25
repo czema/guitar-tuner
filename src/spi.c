@@ -241,7 +241,7 @@ int spi_reader(char *description) {
 				}
 
 				// Update the virtual display.
-				display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
+				//display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
 			}
 			
 			// Only render every 50ms (thats 20 fps).
