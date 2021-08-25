@@ -11,7 +11,7 @@ Copyright 2021 Chet Zema
 #include <stdint.h>
 
 void display_update(uint8_t, uint8_t, uint8_t, uint8_t);
-void display_clear(void);
+void display_reset(void);
 void display_render(void);
 
 #endif

@@ -135,7 +135,7 @@ int spi_reader(char *description) {
 	FT4222_Version            ft4222Version;
 	int                       retCode;
 	uint16                    bytesReceived = 0;
-	uint8                     rxBuffer[65534];
+	uint8                     rxBuffer[65535];
 	struct timeval            start, stop, diff;
 	long int				  elapsed;
 
@@ -196,18 +196,6 @@ int spi_reader(char *description) {
 			printf("SPI: FT4222_SPISlave_GetRxStatus failed (error %d)\n", (int)ft4222Status);
 			retCode = -904;
 			goto exit;
-		}		
-
-		// Only render every 30ms (thats 33 fps).
-		gettimeofday(&stop, NULL);
-		timeval_subtract(&diff, &stop, &start);
-
-		if (diff.tv_sec > 1 || diff.tv_usec > 30000) {
-			//printf("R %u.%u\n", diff.tv_sec, diff.tv_usec);
-			display_render();
-			display_clear();
-			
-			gettimeofday(&start, NULL);
 		}
 
 		if (bytesAvailable == 0) {
@@ -222,18 +210,13 @@ int spi_reader(char *description) {
 			goto exit;
 		}
 		
-		if (bytesRead < 4) continue;
+		if (bytesRead > 65500) puts("O"); // Overflow warning.
+		if (bytesRead > 32767) bytesRead -= 4096; // Skip towards the end.
+		if (bytesRead < 4) continue; // This doesn't really happen, but its a guard to make sure we have at least four bytes because the rest of the code assumes that.
 
 		// Search for the first zero followed by a non-zero (to sync the stream).
 		int i = 0;
 		int synced = 0;
-
-		if (bytesRead > 65500) puts("O"); // Overflow warning.
-
-		// If we read a lot, skip towards the end.
-		if (bytesRead > 32767) {
-			bytesRead = 32767;
-		}
 
 		for (; i < bytesRead - 1;i++) {
 			if (rxBuffer[i] == 0 && rxBuffer[i + 1] != 0) {
@@ -257,7 +240,21 @@ int spi_reader(char *description) {
 					continue;
 				}
 
+				// Update the virtual display.
 				display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
+			}
+			
+			// Only render every 50ms (thats 20 fps).
+			gettimeofday(&stop, NULL);
+			timeval_subtract(&diff, &stop, &start);
+	
+			if (diff.tv_sec > 1 || diff.tv_usec > 50000) {
+				//printf("R %u.%u\n", diff.tv_sec, diff.tv_usec);
+				// Send the virtual display to the LEDs.
+				display_render();
+				display_reset();
+				
+				gettimeofday(&start, NULL);
 			}
 		}
 	}
