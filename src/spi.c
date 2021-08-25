@@ -244,11 +244,11 @@ int spi_reader(char *description) {
 				//display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
 			}
 			
-			// Only render every 50ms (thats 20 fps).
+			// Only render every 16ms (thats 60 fps).
 			gettimeofday(&stop, NULL);
 			timeval_subtract(&diff, &stop, &start);
 	
-			if (diff.tv_sec > 1 || diff.tv_usec > 100000) {
+			if (diff.tv_sec > 1 || diff.tv_usec > 16000) {
 				//printf("R %u.%u\n", diff.tv_sec, diff.tv_usec);
 				// Send the virtual display to the LEDs.
 				display_render();
