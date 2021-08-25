@@ -245,7 +245,7 @@ int spi_reader(char *description) {
 					continue;
 				}
 
-				display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
+				//display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
 
 				// Only render every 30ms (thats 33 fps).
 				gettimeofday(&stop, NULL);
