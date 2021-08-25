@@ -256,9 +256,9 @@ int spi_reader(char *description) {
 					puts("R");
 					display_render();
 					display_clear();
+					
+					gettimeofday(&start, NULL);
 				}
-
-				gettimeofday(&start, NULL);
 			}
 		}
 	}
