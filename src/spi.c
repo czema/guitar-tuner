@@ -253,7 +253,7 @@ int spi_reader(char *description) {
 
 				//if (diff.tv_sec > 1 || diff.tv_usec > 30000) {
 				if (diff.tv_sec > 1) {
-					puts("R");
+					puts("%u", diff.tv_sec);
 					display_render();
 					display_clear();
 					
