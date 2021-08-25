@@ -71,7 +71,7 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, 1, 1, RED);
 	SET(k, 1, 1, GREEN);
 	SET(k, 1, 1, BLUE);
-
+	return;
 	// row 11 (bottom)
 	// k = 0 (acutally 6)
 	SET(k, row7, col04, RED);
