@@ -5,11 +5,11 @@ if [[ "$EUID" -ne 0 ]]; then
 fi
 pushd src/
 echo -e "\033[1;33mCompiling...\033[0m"
-cc leds.c -c -o leds.o
-cc display.c -c -o display.o
-cc spi.c -c -o spi.o
-cc main.c -c -o main.o
-cc *.o -lft4222 -lws2811 -lm -Wl,-rpath,/usr/local/lib -o ../bin/guitar-tuner
+cc leds.c -c -Ofast -o leds.o
+cc display.c -c -Ofast -o display.o
+cc spi.c -c -Ofast -o spi.o
+cc main.c -c -Ofast -o main.o
+cc *.o -lft4222 -lws2811 -lm -Wl,-rpath,/usr/local/lib -Ofast -o ../bin/guitar-tuner
 rm *.o
 cd ../bin
 chown 0:0 guitar-tuner
