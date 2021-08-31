@@ -260,7 +260,7 @@ int spi_reader(char *description) {
 	}
 
 exit:
-	printf("%u", maxValue);
+	printf("%x", maxValue);
 
 	if (ftHandle != (FT_HANDLE)NULL) {
 		(void)FT4222_UnInitialize(ftHandle);
