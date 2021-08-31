@@ -552,18 +552,21 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row1, col17, RED);
 }
 
+unsigned int maxValue = 0;
+
 void display_reset(void) {
 	int i;
 	for (i = 0; i < LED_COUNT; i++) {
-		if (LEDS[i] < 0) {
-			LEDS[i] = 0;
-		}
+		LEDS[i] = 0;
 	}
 }
 
 void display_render(void) {
 	int i;
+	maxValue = 0;
 	for (i = 0; i < LED_COUNT; i++) {
+		if (LEDS[i] > maxValue) maxValue = LEDS[i];
+
 		LEDS[i] *= RED;
 	}
 
