@@ -11,9 +11,9 @@ This component interprets the Polytune LEDs state and converts it to a format su
 
 #include "leds.h"
 
-constexpr auto RED   0x00F00000
-constexpr auto GREEN 0x0000F000
-constexpr auto BLUE  0x000000F0
+constexpr auto RED   0x00F00000;
+constexpr auto GREEN 0x0000F000;
+constexpr auto BLUE  0x000000F0;
 
 // If the current LED is already on, leave it on.  Otherwise switch it based on row/col/color.
 // Increment the LED by one each time it is encountered.
