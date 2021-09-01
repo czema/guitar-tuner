@@ -19,7 +19,9 @@ This component interprets the Polytune LEDs state and converts it to a format su
 // If the current LED is already on, leave it on.  Otherwise switch it based on row/col/color.
 // Increment the LED by one each time it is encountered.
 //#define SET(K, ROW, COL, COLOR) (LEDS[K] = LEDS[K] == 0 ? (ROW & COL) * COLOR : LEDS[K]); K++
-#define SET(K, ROW, COL, COLOR) if (ROW & COL) LEDS[K] += 2; K++
+#define SET(K, ROW, COL, COLOR) if (ROW & COL) buffer[K] += 2; K++
+
+uint8_t buffer[LED_COUNT];
 
 void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	if (q4 != 0) return; // If q4 doesn't hold all zeros then we are out of sync (the device transmits 32 bits but only has 3 HC595's).
@@ -557,7 +559,7 @@ void display_reset(void) {
 	uint16_t i;
 	// Decay over time.
 	for (i = 0; i < LED_COUNT; i++) {
-		uint32_t val = LEDS[i];
+		uint8_t val = buffer[i];
 
 		if (val > 32) {
 			val -= 32;
@@ -565,7 +567,7 @@ void display_reset(void) {
 			val = 0;
 		}
 
-		LEDS[i] = val;
+		buffer[i] = val;
 	}
 }
 
@@ -577,17 +579,18 @@ uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uin
 
 void display_render(void) {
 	uint16_t i;
-	uint32_t maxLed = 0;
-	uint32_t maxVal = 0;
+	uint8_t maxVal = 0;
+	uint8_t maxLed = 0;
+	
 	for (i = 0; i < LED_COUNT; i++) {
 		// Scale the LEDs from 1024-0 to 255-0.
-		uint32_t val = LEDS[i];
+		uint8_t val = buffer[i];
 		if (val > 192) val = 255;
 		//uint32_t val = map(LEDS[i], 0, 255, 0, 255);
 
-		if (LEDS[i] > maxVal) {
-			maxLed = LEDS[i];
+		if (buffer[i] > maxVal) {
 			maxVal = val;
+			maxLed = buffer[i];
 		}
 
 		if (i >= 246 && i <= 313) {
