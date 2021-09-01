@@ -574,7 +574,7 @@ void display_render(void) {
 		// Scale the LEDs from 1024-0 to 255-0.
 		val = map(LEDS[i], 0, 1024, 0, 255);
 
-		if (LEDS[i] > maxValue) {
+		if (LEDS[i] > maxVal) {
 			maxLed = LEDS[i];
 			maxVal = val;
 		}
