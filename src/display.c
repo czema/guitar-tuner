@@ -64,7 +64,7 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	//Display_Row(1, 0, 0, 0, 0, 0, row6 & col01, row6 & col02, row6 & col03, row6 & col04, 0, 0, 0, 0, 0, 0, 0, 0);
 	//Display_Row(1, 0, 0, 0, 0, 0, row7 & col01, row7 & col02, row7 & col03, row7 & col04, 0, 0, 0, 0, 0, 0, 0, 0);
 
-	int k = 0;
+	uint16_t k = 0;
 
 	// unused
 	// k = 0
@@ -554,24 +554,24 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 }
 
 void display_reset(void) {
-	int i;
+	uint16_t i;
 	for (i = 0; i < LED_COUNT; i++) {
 		LEDS[i] = 0;
 	}
 }
 
-unsigned int c = 0;
+uint32_t c = 0;
 
 void display_render(void) {
-	int i;
-	unsigned int maxValue = 0;
+	uint16_t i;
+	uint32_t maxValue = 0;
 	for (i = 0; i < LED_COUNT; i++) {
 		if (LEDS[i] > maxValue) maxValue = LEDS[i];
 
 		LEDS[i] *= RED;
 	}
 
-	if (c % 100 == 0) {
+	if ((c % 100) == 0) {
 		printf("%u\n", maxValue);
 	}
 
