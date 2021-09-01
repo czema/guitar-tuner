@@ -572,7 +572,7 @@ void display_render(void) {
 	}
 
 	if (c % 100 == 0) {
-		printf("%u", maxValue);
+		printf("%u\n", maxValue);
 	}
 
 	c++;
