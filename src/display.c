@@ -561,8 +561,8 @@ void display_reset(void) {
 	for (i = 0; i < LED_COUNT; i++) {
 		uint8_t val = buffer[i];
 
-		if (val > 32) {
-			val -= 32;
+		if (val > 2) {
+			val -= 2;
 		} else {
 			val = 0;
 		}
@@ -585,7 +585,7 @@ void display_render(void) {
 	for (i = 0; i < LED_COUNT; i++) {
 		// Scale the LEDs from 1024-0 to 255-0.
 		uint8_t val = buffer[i];
-		if (val > 192) val = 255;
+		if (val > 127) val = 255;
 		//uint32_t val = map(LEDS[i], 0, 255, 0, 255);
 
 		if (buffer[i] > maxVal) {
