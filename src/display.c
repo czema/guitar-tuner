@@ -7,6 +7,7 @@ This component interprets the Polytune LEDs state and converts it to a format su
 
 */
 
+#include <stdio.h>
 #include <stdint.h>
 
 #include "leds.h"
@@ -552,8 +553,6 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row1, col17, RED);
 }
 
-unsigned int maxValue = 0;
-
 void display_reset(void) {
 	int i;
 	for (i = 0; i < LED_COUNT; i++) {
@@ -561,14 +560,22 @@ void display_reset(void) {
 	}
 }
 
+unsigned int c = 0;
+
 void display_render(void) {
 	int i;
-	maxValue = 0;
+	unsigned int maxValue = 0;
 	for (i = 0; i < LED_COUNT; i++) {
 		if (LEDS[i] > maxValue) maxValue = LEDS[i];
 
 		LEDS[i] *= RED;
 	}
+
+	if (c % 100 == 0) {
+		printf("%u", maxValue);
+	}
+
+	c++;
 
 	leds_render();
 }
