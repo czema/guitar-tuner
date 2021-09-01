@@ -562,17 +562,28 @@ void display_reset(void) {
 
 uint32_t c = 0;
 
+uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max) {
+	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 void display_render(void) {
 	uint16_t i;
-	uint32_t maxValue = 0;
+	uint32_t maxLed = 0;
+	uint32_t maxVal = 0;
 	for (i = 0; i < LED_COUNT; i++) {
-		if (LEDS[i] > maxValue) maxValue = LEDS[i];
+		// Scale the LEDs from 1024-0 to 255-0.
+		val = map(LEDS[i], 0, 1024, 0, 255);
 
-		LEDS[i] *= RED;
+		if (LEDS[i] > maxValue) {
+			maxLed = LEDS[i];
+			maxVal = val;
+		}
+
+		LEDS[i] = val;
 	}
 
 	if ((c % 100) == 0) {
-		printf("%u\n", maxValue);
+		printf("%u, %u\n", maxLed, maxVal);
 	}
 
 	c++;
