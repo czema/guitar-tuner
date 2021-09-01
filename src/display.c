@@ -572,7 +572,7 @@ void display_render(void) {
 	uint32_t maxVal = 0;
 	for (i = 0; i < LED_COUNT; i++) {
 		// Scale the LEDs from 1024-0 to 255-0.
-		val = LEDS[i];
+		uint32_t val = LEDS[i];
 		if (val > 255) val = 255;
 		//uint32_t val = map(LEDS[i], 0, 255, 0, 255);
 
