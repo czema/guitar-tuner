@@ -579,7 +579,12 @@ void display_render(void) {
 			maxVal = val;
 		}
 
-		LEDS[i] = val;
+		if (i > 246 && i < 280) {
+			// This is the green band.
+			LEDS[i] = val << 8;
+		} else {
+			LEDS[i] = val << 16;
+		}
 	}
 
 	if ((c % 100) == 0) {
