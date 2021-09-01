@@ -555,8 +555,17 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 
 void display_reset(void) {
 	uint16_t i;
+	// Decay over time.
 	for (i = 0; i < LED_COUNT; i++) {
-		LEDS[i] = 0;
+		uint32_t val = LEDS[i];
+
+		if (val > 32) {
+			val -= 32;
+		} else {
+			val = 0;
+		}
+
+		LEDS[i] = val;
 	}
 }
 
@@ -573,7 +582,7 @@ void display_render(void) {
 	for (i = 0; i < LED_COUNT; i++) {
 		// Scale the LEDs from 1024-0 to 255-0.
 		uint32_t val = LEDS[i];
-		if (val > 126) val = 255;
+		if (val > 192) val = 255;
 		//uint32_t val = map(LEDS[i], 0, 255, 0, 255);
 
 		if (LEDS[i] > maxVal) {
