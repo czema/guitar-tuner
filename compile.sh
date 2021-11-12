@@ -16,3 +16,4 @@ chown 0:0 guitar-tuner
 chmod u+s guitar-tuner
 popd
 echo -e "\033[0;32mDone.\033[0m"
+ 
