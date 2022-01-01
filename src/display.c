@@ -498,8 +498,8 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row1, col06, RED);
 	SET(k, row1, col07, RED);
 	SET(k, row1, col07, RED);
-	SET(k, row1, col08, RED);
-	SET(k, row1, col08, RED);
+	SET(k, row1, col08, GREEN);
+	SET(k, row1, col08, GREEN);
 	SET(k, row1, col09, RED);
 	SET(k, row1, col09, RED);
 	SET(k, row1, col10, RED);
@@ -561,8 +561,8 @@ void display_reset(void) {
 	for (i = 0; i < LED_COUNT; i++) {
 		uint8_t val = buffer[i];
 
-		if (val > 4) {
-			val -= 4;
+		if (val > 8) {
+			val -= 8;
 		} else {
 			val = 0;
 		}
@@ -570,8 +570,6 @@ void display_reset(void) {
 		buffer[i] = val;
 	}
 }
-
-uint32_t c = 0;
 
 uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max) {
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
@@ -598,12 +596,6 @@ void display_render(void) {
 			LEDS[i] = val << 16;
 		}
 	}
-
-	if ((c % 1000) == 0) {
-		printf("%u, %u\n", maxLed, maxVal);
-	}
-
-	c++;
 
 	leds_render();
 }
