@@ -535,8 +535,8 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row1, col11, RED);
 	SET(k, row1, col10, RED);
 	SET(k, row1, col10, RED);
-	SET(k, row1, col09, RED);
-	SET(k, row1, col09, RED);
+	SET(k, row1, col09, GREEN);
+	SET(k, row1, col09, GREEN);
 	SET(k, row1, col08, RED);
 	SET(k, row1, col08, RED);
 	SET(k, row1, col07, RED);
