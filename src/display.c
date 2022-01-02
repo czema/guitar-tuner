@@ -561,7 +561,7 @@ void display_reset(void) {
 	for (i = 0; i < LED_COUNT; i++) {
 		uint8_t val = buffer[i];
 
-		if (val > 8) {
+		if (val > 32) {
 			val -= 8;
 		} else {
 			val = 0;
@@ -583,7 +583,7 @@ void display_render(void) {
 	for (i = 0; i < LED_COUNT; i++) {
 		uint8_t val = buffer[i];
 		if (val > 255) val = 255; // Clamp to 255
-		
+
 		if (buffer[i] > maxVal) {
 			maxVal = val;
 			maxLed = buffer[i];
@@ -591,6 +591,10 @@ void display_render(void) {
 
 		if (i >= 246 && i <= 313) {
 			// This is the green band.
+			LEDS[i] = val << 8;
+		} else if (i == 228 || i == 229 || i == 194 || i == 195 || i == 160 || i == 161 || i == 126 || i == 127 ) {
+			LEDS[i] = val << 8;
+		} else if (i == 330 || i == 331 || i == 364 || i == 365 || i == 398 || i == 399 || i == 432 || i == 433) {
 			LEDS[i] = val << 8;
 		} else {
 			LEDS[i] = val << 16;
