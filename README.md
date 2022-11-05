@@ -26,7 +26,7 @@ Software components to support the operation of a giant guitar tuner display.  S
 * Localization, WLAN Country - US
 * Localization, Timezone - US, Eastern
 * Locatization, Keyboard - English (US), Other.
-* System, Wireless LAN (configure to allow installing packages and transferring application code). Use Atreyu-24
+* System, Wireless LAN (configure to allow installing packages and transferring application code).
 * System, Network at Boot (disable to speed bootup).
 * Interface, SSH (enables SFTP and SSH console).
 * Interface, Serial Port (enable to allow console access over pins 6 GND, 8 TX, 10 RX).
