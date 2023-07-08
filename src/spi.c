@@ -173,15 +173,14 @@ int spi_reader(char *description) {
 			retCode = -903;
 			goto exit;
 		}
-		else {
-			setuid(getuid());
-			puts("SPI: Superuser relinquished.");
-
-			printf("SPI: FT4222 SPI Slave OK\n");
-			printf("SPI: Running.\n");
-			printf("SPI: Press Ctrl+C to quit.\n");
-		}
 	}
+
+	setuid(getuid());
+	puts("SPI: Superuser relinquished.");
+
+	printf("SPI: FT4222 SPI Slave OK\n");
+	printf("SPI: Running.\n");
+	printf("SPI: Press Ctrl+C to quit.\n");
 
 	gettimeofday(&start, NULL);
 
@@ -190,11 +189,23 @@ int spi_reader(char *description) {
 		uint16 bytesAvailable = 0;
 		uint16 bytesRead = 0;
 
-//		ft4222Status = FT4222_SPISlave_GetRxStatus(ftHandle, &bytesAvailable);
-ft4222Status = FT4222_OK;
-display_update(1, 1, 1, 1);
-display_update(0, 1, 1, 1);
-display_update(1, 1, 1, 0);
+		ft4222Status = FT4222_SPISlave_GetRxStatus(ftHandle, &bytesAvailable);
+
+		// Only render every 30ms (thats 33 fps).
+		gettimeofday(&stop, NULL);
+		timeval_subtract(&diff, &stop, &start);
+	
+		if (diff.tv_sec > 1 || diff.tv_usec > 30000) { // 33 frame/sec
+			//printf("R %u.%u\n", diff.tv_sec, diff.tv_usec);
+			// Send the virtual display to the LEDs.
+			display_render();
+			display_reset();
+				
+			gettimeofday(&start, NULL);
+		}
+
+		ft4222Status = FT4222_SPISlave_GetRxStatus(ftHandle, &bytesAvailable);
+
 		if (FT4222_OK != ft4222Status) {
 			printf("SPI: FT4222_SPISlave_GetRxStatus failed (error %d)\n", (int)ft4222Status);
 			retCode = -904;
@@ -214,7 +225,6 @@ display_update(1, 1, 1, 0);
 			gettimeofday(&start, NULL);
 		}
 
-continue;
 		if (bytesAvailable == 0) {
 			continue;
 		}
@@ -260,7 +270,7 @@ continue;
 				// Update the virtual display.
 				display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
 			}
-			//display_reset();
+			display_reset();
 		}
 		
 	}
