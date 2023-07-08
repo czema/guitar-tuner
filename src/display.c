@@ -19,7 +19,7 @@ This component interprets the Polytune LEDs state and converts it to a format su
 // If the current LED is already on, leave it on.  Otherwise switch it based on row/col/color.
 // Increment the LED by one each time it is encountered.
 //#define SET(K, ROW, COL, COLOR) (LEDS[K] = LEDS[K] == 0 ? (ROW & COL) * COLOR : LEDS[K]); K++
-#define SET(K, ROW, COL, COLOR) if (ROW & COL) buffer[K] += 2; K++
+#define SET(K, ROW, COL, COLOR) if (ROW & COL) buffer[K] == 255 ? (buffer[K] = 255) : (buffer[K] += 1); K++
 
 uint8_t buffer[LED_COUNT];
 
@@ -577,17 +577,10 @@ uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uin
 
 void display_render(void) {
 	uint16_t i;
-	uint8_t maxVal = 0;
-	uint8_t maxLed = 0;
 	
 	for (i = 0; i < LED_COUNT; i++) {
 		uint8_t val = buffer[i];
-		if (val > 255) val = 255; // Clamp to 255
-
-		if (buffer[i] > maxVal) {
-			maxVal = val;
-			maxLed = buffer[i];
-		}
+//		if (val > 255) val = 255; // Clamp to 255
 
 		if (i >= 246 && i <= 313) {
 			// This is the green band.

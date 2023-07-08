@@ -190,14 +190,31 @@ int spi_reader(char *description) {
 		uint16 bytesAvailable = 0;
 		uint16 bytesRead = 0;
 
-		ft4222Status = FT4222_SPISlave_GetRxStatus(ftHandle, &bytesAvailable);
-
+//		ft4222Status = FT4222_SPISlave_GetRxStatus(ftHandle, &bytesAvailable);
+ft4222Status = FT4222_OK;
+display_update(1, 1, 1, 1);
+display_update(0, 1, 1, 1);
+display_update(1, 1, 1, 0);
 		if (FT4222_OK != ft4222Status) {
 			printf("SPI: FT4222_SPISlave_GetRxStatus failed (error %d)\n", (int)ft4222Status);
 			retCode = -904;
 			goto exit;
 		}
 
+		// Only render every 32ms (thats 30 fps).
+		gettimeofday(&stop, NULL);
+		timeval_subtract(&diff, &stop, &start);
+	
+		if (diff.tv_sec > 1 || diff.tv_usec > 4000) { //250 frame/sec
+			//printf("R %u.%u\n", diff.tv_sec, diff.tv_usec);
+			// Send the virtual display to the LEDs.
+			display_render();
+			//display_reset();
+				
+			gettimeofday(&start, NULL);
+		}
+
+continue;
 		if (bytesAvailable == 0) {
 			continue;
 		}
@@ -243,21 +260,11 @@ int spi_reader(char *description) {
 				// Update the virtual display.
 				display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
 			}
-			
-			// Only render every 32ms (thats 30 fps).
-			gettimeofday(&stop, NULL);
-			timeval_subtract(&diff, &stop, &start);
-	
-			if (diff.tv_sec > 1 || diff.tv_usec > 4000) { //250 frame/sec
-				//printf("R %u.%u\n", diff.tv_sec, diff.tv_usec);
-				// Send the virtual display to the LEDs.
-				display_render();
-				display_reset();
-				
-				gettimeofday(&start, NULL);
-			}
+			//display_reset();
 		}
+		
 	}
+	
 
 exit:
 	if (ftHandle != (FT_HANDLE)NULL) {
