@@ -1,5 +1,5 @@
 .vs/
 bin/
-*.o
+obj/
 deps/rpi_ws281x/
 deps/libft4222/examples/get-version
