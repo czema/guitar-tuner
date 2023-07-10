@@ -95,4 +95,6 @@ int leds_render()
         ws2811_fini(&ledstring);
         return ret;
     }
+
+    return 0;
 }

@@ -157,7 +157,7 @@ int spi_reader(char *description) {
 	else {
 		(void)FT4222_UnInitialize(ftHandle);
 		(void)FT_Close(ftHandle);
-		ftHandle == (FT_HANDLE)NULL;
+		ftHandle = (FT_HANDLE)NULL;
 
 		ftStatus = FT_OpenEx(description, FT_OPEN_BY_DESCRIPTION, &ftHandle);
 		if (ftStatus != FT_OK) {
@@ -263,7 +263,7 @@ exit:
 	if (ftHandle != (FT_HANDLE)NULL) {
 		(void)FT4222_UnInitialize(ftHandle);
 		(void)FT_Close(ftHandle);
-		ftHandle == (FT_HANDLE)NULL;
+		ftHandle = (FT_HANDLE)NULL;
 	}
 
 	leds_shutdown();
