@@ -6,7 +6,7 @@ fi
 pushd src/
 echo -e "\033[1;33mCompiling...\033[0m"
 cc leds.c -c -Ofast -o ../obj/leds.o
-cc display.c -c -Ofast -o ../obj/display.o
+cc display.c -c -Ofast -Wa,-ahl=../obj/display.s -o ../obj/display.o
 cc spi.c -c -Ofast -o ../obj/spi.o
 cc main.c -c -Ofast -o ../obj/main.o
 cd ../obj
