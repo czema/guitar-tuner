@@ -186,23 +186,21 @@ int spi_reader(char *description) {
 
 	// Main loop.
 	while (running == 1) {
-		uint16 bytesAvailable = 0;
-		uint16 bytesRead = 0;
-
-		ft4222Status = FT4222_SPISlave_GetRxStatus(ftHandle, &bytesAvailable);
-
-		// Only render every 30ms (thats 33 fps).
+		// Only render every 16ms (thats 60 fps).
 		gettimeofday(&stop, NULL);
 		timeval_subtract(&diff, &stop, &start);
 	
-		if (diff.tv_sec > 1 || diff.tv_usec > 30000) { // 33 frame/sec
+		if (diff.tv_sec > 1 || diff.tv_usec > 16666) { // 60 frame/sec
 			//printf("R %u.%u\n", diff.tv_sec, diff.tv_usec);
 			// Send the virtual display to the LEDs.
 			display_render();
-			display_reset();
+			//display_reset();
 				
 			gettimeofday(&start, NULL);
 		}
+
+		uint16 bytesAvailable = 0;
+		uint16 bytesRead = 0;
 
 		ft4222Status = FT4222_SPISlave_GetRxStatus(ftHandle, &bytesAvailable);
 
@@ -210,19 +208,6 @@ int spi_reader(char *description) {
 			printf("SPI: FT4222_SPISlave_GetRxStatus failed (error %d)\n", (int)ft4222Status);
 			retCode = -904;
 			goto exit;
-		}
-
-		// Only render every 32ms (thats 30 fps).
-		gettimeofday(&stop, NULL);
-		timeval_subtract(&diff, &stop, &start);
-	
-		if (diff.tv_sec > 1 || diff.tv_usec > 4000) { //250 frame/sec
-			//printf("R %u.%u\n", diff.tv_sec, diff.tv_usec);
-			// Send the virtual display to the LEDs.
-			display_render();
-			//display_reset();
-				
-			gettimeofday(&start, NULL);
 		}
 
 		if (bytesAvailable == 0) {
@@ -238,7 +223,7 @@ int spi_reader(char *description) {
 		}
 		
 		if (bytesRead > 65500) puts("O"); // Overflow warning.
-		if (bytesRead > 32767) bytesRead -= 4096; // Skip towards the end.
+		if (bytesRead > 32767) bytesRead -= 32767; // Skip towards the end to catch up.
 		if (bytesRead < 4) continue; // This doesn't really happen, but its a guard to make sure we have at least four bytes because the rest of the code assumes that.
 
 		// Search for the first zero followed by a non-zero (to sync the stream).
@@ -270,9 +255,7 @@ int spi_reader(char *description) {
 				// Update the virtual display.
 				display_update(rxBuffer[i + 3], rxBuffer[i + 2], rxBuffer[i + 1], rxBuffer[i + 0]);
 			}
-			display_reset();
 		}
-		
 	}
 	
 

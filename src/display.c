@@ -17,22 +17,19 @@ This component interprets the Polytune LEDs state and converts it to a format su
 #define BLUE  0x000000F0
 
 // If the current LED is already on, leave it on.  Otherwise switch it based on row/col/color.
-// Increment the LED by one each time it is encountered.
 //#define SET(K, ROW, COL, COLOR) (LEDS[K] = LEDS[K] == 0 ? (ROW & COL) * COLOR : LEDS[K]); K++
-#define SET(K, ROW, COL, COLOR) if (ROW & COL) buffer[K] == 255 ? (buffer[K] = 255) : (buffer[K] += 1); K++
-
-uint8_t buffer[LED_COUNT];
+#define SET(K, ROW, COL, COLOR) if ((ROW) & (COL)) LEDS[(K)] = (COLOR); (K++)
 
 void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	if (q4 != 0) return; // If q4 doesn't hold all zeros then we are out of sync (the device transmits 32 bits but only has 3 HC595's).
 
-	uint8_t row5 = (q1 & 0b00000001) != 1; //   q1->a
-	uint8_t row1 = (q1 & 0b00000010) != 2; //   q1->b
-	uint8_t row2 = (q1 & 0b00000100) != 4; //   q1->c
-	uint8_t row3 = (q1 & 0b00001000) != 8; //   q1->d
-	uint8_t row4 = (q1 & 0b00010000) != 16; //  q1->e
-	uint8_t row6 = (q1 & 0b00100000) != 32; //  q1->f
-	uint8_t row7 = (q1 & 0b01000000) != 64; //  q1->g
+	uint8_t row05 = (q1 & 0b00000001) != 1; //   q1->a
+	uint8_t row01 = (q1 & 0b00000010) != 2; //   q1->b
+	uint8_t row02 = (q1 & 0b00000100) != 4; //   q1->c
+	uint8_t row03 = (q1 & 0b00001000) != 8; //   q1->d
+	uint8_t row04 = (q1 & 0b00010000) != 16; //  q1->e
+	uint8_t row06 = (q1 & 0b00100000) != 32; //  q1->f
+	uint8_t row07 = (q1 & 0b01000000) != 64; //  q1->g
 	uint8_t col09 = (q1 & 0b10000000) != 128; // q1->h
 
 	uint8_t col01 = (q2 & 0b00000001) != 1; //   q2->a
@@ -53,18 +50,18 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	uint8_t col16 = (q3 & 0b01000000) != 64; //  q3->g
 	uint8_t col17 = (q3 & 0b10000000) != 128; // q3->h
 
-	//Display_Row(row1, col01, col02, col03, col04, col05, col06, col07, col08, col09, col10, col11, col12, col13, col14, col15, col16, col17);
-	//Display_Row(row2, col01, col02, col03, col04, col05, col06, col07, col08, col09, col10, col11, col12, col13, col14, col15, col16, col17);
-	//Display_Row(row3, col01, col02, col03, col04, col05, col06, col07, col08, col09, col10, col11, col12, col13, col14, col15, col16, col17);
-	//Display_Row(row4, col01, col02, col03, col04, col05, col06, col07, col08, col09, col10, col11, col12, col13, col14, col15, col16, col17);
-	//Display_Row(row5, col01, col02, col03, col04, col05, col06, col07, col08, col09, col10, col11, col12, col13, col14, col15, col16, col17);
+	//Display_Row(row01, col01, col02, col03, col04, col05, col06, col07, col08, col09, col10, col11, col12, col13, col14, col15, col16, col17);
+	//Display_Row(row02, col01, col02, col03, col04, col05, col06, col07, col08, col09, col10, col11, col12, col13, col14, col15, col16, col17);
+	//Display_Row(row03, col01, col02, col03, col04, col05, col06, col07, col08, col09, col10, col11, col12, col13, col14, col15, col16, col17);
+	//Display_Row(row04, col01, col02, col03, col04, col05, col06, col07, col08, col09, col10, col11, col12, col13, col14, col15, col16, col17);
+	//Display_Row(row05, col01, col02, col03, col04, col05, col06, col07, col08, col09, col10, col11, col12, col13, col14, col15, col16, col17);
 
-	//Display_Row(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, row6 & col12, row6 & col13, 0, 0, 0, 0, 0, 0);
-	//Display_Row(1, 0, 0, 0, 0, 0, row7 & col06, row6 & col06, row6 & col08, row6 & col11, row6 & col14, row6 & col15, 0, 0, 0, 0, 0, 0);
-	//Display_Row(1, 0, 0, 0, 0, 0, row7 & col05, row7 & col07, row6 & col07, row6 & col16, 0, 0, 0, 0, 0, 0, 0, 0);
-	//Display_Row(1, 0, 0, 0, 0, 0, row6 & col05, row6 & col09, row6 & col10, row6 & col17, 0, 0, 0, 0, 0, 0, 0, 0);
-	//Display_Row(1, 0, 0, 0, 0, 0, row6 & col01, row6 & col02, row6 & col03, row6 & col04, 0, 0, 0, 0, 0, 0, 0, 0);
-	//Display_Row(1, 0, 0, 0, 0, 0, row7 & col01, row7 & col02, row7 & col03, row7 & col04, 0, 0, 0, 0, 0, 0, 0, 0);
+	//Display_Row(1, 0, 0, 0, 0, 0,				0,				0,				0,			 0, row06 & col12, row06 & col13, 0, 0, 0, 0, 0, 0);
+	//Display_Row(1, 0, 0, 0, 0, 0, row07 & col06, row06 & col06, row06 & col08, row06 & col11, row06 & col14, row06 & col15, 0, 0, 0, 0, 0, 0);
+	//Display_Row(1, 0, 0, 0, 0, 0, row07 & col05, row07 & col07, row06 & col07, row06 & col16, 0, 0, 0, 0, 0, 0, 0, 0);
+	//Display_Row(1, 0, 0, 0, 0, 0, row06 & col05, row06 & col09, row06 & col10, row06 & col17, 0, 0, 0, 0, 0, 0, 0, 0);
+	//Display_Row(1, 0, 0, 0, 0, 0, row06 & col01, row06 & col02, row06 & col03, row06 & col04, 0, 0, 0, 0, 0, 0, 0, 0);
+	//Display_Row(1, 0, 0, 0, 0, 0, row07 & col01, row07 & col02, row07 & col03, row07 & col04, 0, 0, 0, 0, 0, 0, 0, 0);
 
 	uint16_t k = 0;
 
@@ -78,521 +75,495 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, 1, 1, BLUE);
 	
 	// row 11 (bottom)
-	// k = 0 (acutally 6)
-	SET(k, row7, col04, RED);
-	SET(k, row7, col04, RED);
-	SET(k, row7, col03, RED);
-	SET(k, row7, col03, RED);
-	SET(k, row7, col02, RED);
-	SET(k, row7, col02, RED);
-	SET(k, row7, col01, RED);
-	SET(k, row7, col01, RED);
+	// k = 6
+	SET(k, row07, col04, RED);
+	SET(k, row07, col04, RED);
+	SET(k, row07, col03, RED);
+	SET(k, row07, col03, RED);
+	SET(k, row07, col02, RED);
+	SET(k, row07, col02, RED);
+	SET(k, row07, col01, RED);
+	SET(k, row07, col01, RED);
 
-	SET(k, row7, col01, RED);
-	SET(k, row7, col01, RED);
-	SET(k, row7, col02, RED);
-	SET(k, row7, col02, RED);
-	SET(k, row7, col03, RED);
-	SET(k, row7, col03, RED);
-	SET(k, row7, col04, RED);
-	SET(k, row7, col04, RED);
+	SET(k, row07, col01, RED);
+	SET(k, row07, col01, RED);
+	SET(k, row07, col02, RED);
+	SET(k, row07, col02, RED);
+	SET(k, row07, col03, RED);
+	SET(k, row07, col03, RED);
+	SET(k, row07, col04, RED);
+	SET(k, row07, col04, RED);
 
 	// row 10
-	// k = 16
-	SET(k, row6, col04, RED);
-	SET(k, row6, col04, RED);
-	SET(k, row6, col03, RED);
-	SET(k, row6, col03, RED);
-	SET(k, row6, col02, RED);
-	SET(k, row6, col02, RED);
-	SET(k, row6, col01, RED);
-	SET(k, row6, col01, RED);
+	// k = 22
+	SET(k, row06, col04, RED);
+	SET(k, row06, col04, RED);
+	SET(k, row06, col03, RED);
+	SET(k, row06, col03, RED);
+	SET(k, row06, col02, RED);
+	SET(k, row06, col02, RED);
+	SET(k, row06, col01, RED);
+	SET(k, row06, col01, RED);
 
-	SET(k, row6, col01, RED);
-	SET(k, row6, col01, RED);
-	SET(k, row6, col02, RED);
-	SET(k, row6, col02, RED);
-	SET(k, row6, col03, RED);
-	SET(k, row6, col03, RED);
-	SET(k, row6, col04, RED);
-	SET(k, row6, col04, RED);
+	SET(k, row06, col01, RED);
+	SET(k, row06, col01, RED);
+	SET(k, row06, col02, RED);
+	SET(k, row06, col02, RED);
+	SET(k, row06, col03, RED);
+	SET(k, row06, col03, RED);
+	SET(k, row06, col04, RED);
+	SET(k, row06, col04, RED);
 
 	// row 9
-	// k = 32
-	SET(k, row6, col17, RED);
-	SET(k, row6, col17, RED);
-	SET(k, row6, col10, RED);
-	SET(k, row6, col10, RED);
-	SET(k, row6, col09, RED);
-	SET(k, row6, col09, RED);
-	SET(k, row6, col05, RED);
-	SET(k, row6, col05, RED);
+	// k = 38
+	SET(k, row06, col17, RED);
+	SET(k, row06, col17, RED);
+	SET(k, row06, col10, RED);
+	SET(k, row06, col10, RED);
+	SET(k, row06, col09, RED);
+	SET(k, row06, col09, RED);
+	SET(k, row06, col05, RED);
+	SET(k, row06, col05, RED);
 
-	SET(k, row6, col05, RED);
-	SET(k, row6, col05, RED);
-	SET(k, row6, col09, RED);
-	SET(k, row6, col09, RED);
-	SET(k, row6, col10, RED);
-	SET(k, row6, col10, RED);
-	SET(k, row6, col17, RED);
-	SET(k, row6, col17, RED);
+	SET(k, row06, col05, RED);
+	SET(k, row06, col05, RED);
+	SET(k, row06, col09, RED);
+	SET(k, row06, col09, RED);
+	SET(k, row06, col10, RED);
+	SET(k, row06, col10, RED);
+	SET(k, row06, col17, RED);
+	SET(k, row06, col17, RED);
 
 	// row 8
-	// k = 48
-	SET(k, row6, col16, RED);
-	SET(k, row6, col16, RED);
-	SET(k, row6, col07, RED);
-	SET(k, row6, col07, RED);
-	SET(k, row7, col07, RED);
-	SET(k, row7, col07, RED);
-	SET(k, row7, col05, RED);
-	SET(k, row7, col05, RED);
+	// k = 54
+	SET(k, row06, col16, RED);
+	SET(k, row06, col16, RED);
+	SET(k, row06, col07, RED);
+	SET(k, row06, col07, RED);
+	SET(k, row07, col07, RED);
+	SET(k, row07, col07, RED);
+	SET(k, row07, col05, RED);
+	SET(k, row07, col05, RED);
 
-	SET(k, row7, col05, RED);
-	SET(k, row7, col05, RED);
-	SET(k, row7, col07, RED);
-	SET(k, row7, col07, RED);
-	SET(k, row6, col07, RED);
-	SET(k, row6, col07, RED);
-	SET(k, row6, col16, RED);
-	SET(k, row6, col16, RED);
+	SET(k, row07, col05, RED);
+	SET(k, row07, col05, RED);
+	SET(k, row07, col07, RED);
+	SET(k, row07, col07, RED);
+	SET(k, row06, col07, RED);
+	SET(k, row06, col07, RED);
+	SET(k, row06, col16, RED);
+	SET(k, row06, col16, RED);
 
 	// row 7
-	// k = 64
-	SET(k, row6, col11, RED);
-	SET(k, row6, col11, RED);
-	SET(k, row6, col08, RED);
-	SET(k, row6, col08, RED);
-	SET(k, row6, col06, RED);
-	SET(k, row6, col06, RED);
-	SET(k, row7, col06, RED);
-	SET(k, row7, col06, RED);
+	// k = 70
+	SET(k, row06, col11, RED);
+	SET(k, row06, col11, RED);
+	SET(k, row06, col08, RED);
+	SET(k, row06, col08, RED);
+	SET(k, row06, col06, RED);
+	SET(k, row06, col06, RED);
+	SET(k, row07, col06, RED);
+	SET(k, row07, col06, RED);
 
-	SET(k, row7, col06, RED);
-	SET(k, row7, col06, RED);
-	SET(k, row6, col06, RED);
-	SET(k, row6, col06, RED);
-	SET(k, row6, col08, RED);
-	SET(k, row6, col08, RED);
-	SET(k, row6, col11, RED);
-	SET(k, row6, col11, RED);
+	SET(k, row07, col06, RED);
+	SET(k, row07, col06, RED);
+	SET(k, row06, col06, RED);
+	SET(k, row06, col06, RED);
+	SET(k, row06, col08, RED);
+	SET(k, row06, col08, RED);
+	SET(k, row06, col11, RED);
+	SET(k, row06, col11, RED);
 
 	// row 7 (sharp, bottom)
-	SET(k, row6, col14, RED);
-	SET(k, row6, col14, RED);
-	SET(k, row6, col15, RED);
-	SET(k, row6, col15, RED);
-	SET(k, row6, col15, RED);
-	SET(k, row6, col15, RED);
-	SET(k, row6, col14, RED);
-	SET(k, row6, col14, RED);
+	// k = 86
+	SET(k, row06, col14, RED);
+	SET(k, row06, col14, RED);
+	SET(k, row06, col15, RED);
+	SET(k, row06, col15, RED);
+	SET(k, row06, col15, RED);
+	SET(k, row06, col15, RED);
+	SET(k, row06, col14, RED);
+	SET(k, row06, col14, RED);
 
 	// row 6 (sharp, top)
-	SET(k, row6, col12, RED);
-	SET(k, row6, col12, RED);
-	SET(k, row6, col13, RED);
-	SET(k, row6, col13, RED);
-	SET(k, row6, col13, RED);
-	SET(k, row6, col13, RED);
-	SET(k, row6, col12, RED);
-	SET(k, row6, col12, RED);
+	// k = 94
+	SET(k, row06, col12, RED);
+	SET(k, row06, col12, RED);
+	SET(k, row06, col13, RED);
+	SET(k, row06, col13, RED);
+	SET(k, row06, col13, RED);
+	SET(k, row06, col13, RED);
+	SET(k, row06, col12, RED);
+	SET(k, row06, col12, RED);
 	
 	k += 8; // Skip 8 leds.
 
 	// row 5
-	SET(k, row5, col01, RED);
-	SET(k, row5, col01, RED);
-	SET(k, row5, col02, RED);
-	SET(k, row5, col02, RED);
-	SET(k, row5, col03, RED);
-	SET(k, row5, col03, RED);
-	SET(k, row5, col04, RED);
-	SET(k, row5, col04, RED);
-	SET(k, row5, col05, RED);
-	SET(k, row5, col05, RED);
-	SET(k, row5, col06, RED);
-	SET(k, row5, col06, RED);
-	SET(k, row5, col07, RED);
-	SET(k, row5, col07, RED);
-	SET(k, row5, col08, RED);
-	SET(k, row5, col08, RED);
-	SET(k, row5, col09, RED);
-	SET(k, row5, col09, RED);
-	SET(k, row5, col10, RED);
-	SET(k, row5, col10, RED);
-	SET(k, row5, col11, RED);
-	SET(k, row5, col11, RED);
-	SET(k, row5, col12, RED);
-	SET(k, row5, col12, RED);
-	SET(k, row5, col13, RED);
-	SET(k, row5, col13, RED);
-	SET(k, row5, col14, RED);
-	SET(k, row5, col14, RED);
-	SET(k, row5, col15, RED);
-	SET(k, row5, col15, RED);
-	SET(k, row5, col16, RED);
-	SET(k, row5, col16, RED);
-	SET(k, row5, col17, RED);
-	SET(k, row5, col17, RED);
+	// k = 110
+	SET(k, row05, col01, RED);
+	SET(k, row05, col01, RED);
+	SET(k, row05, col02, RED);
+	SET(k, row05, col02, RED);
+	SET(k, row05, col03, RED);
+	SET(k, row05, col03, RED);
+	SET(k, row05, col04, RED);
+	SET(k, row05, col04, RED);
+	SET(k, row05, col05, RED);
+	SET(k, row05, col05, RED);
+	SET(k, row05, col06, RED);
+	SET(k, row05, col06, RED);
+	SET(k, row05, col07, RED);
+	SET(k, row05, col07, RED);
+	SET(k, row05, col08, RED);
+	SET(k, row05, col08, RED);
+	SET(k, row05, col09, RED);
+	SET(k, row05, col09, RED);
+	SET(k, row05, col10, RED);
+	SET(k, row05, col10, RED);
+	SET(k, row05, col11, RED);
+	SET(k, row05, col11, RED);
+	SET(k, row05, col12, RED);
+	SET(k, row05, col12, RED);
+	SET(k, row05, col13, RED);
+	SET(k, row05, col13, RED);
+	SET(k, row05, col14, RED);
+	SET(k, row05, col14, RED);
+	SET(k, row05, col15, RED);
+	SET(k, row05, col15, RED);
+	SET(k, row05, col16, RED);
+	SET(k, row05, col16, RED);
+	SET(k, row05, col17, RED);
+	SET(k, row05, col17, RED);
 
-	SET(k, row5, col17, RED);
-	SET(k, row5, col17, RED);
-	SET(k, row5, col16, RED);
-	SET(k, row5, col16, RED);
-	SET(k, row5, col15, RED);
-	SET(k, row5, col15, RED);
-	SET(k, row5, col14, RED);
-	SET(k, row5, col14, RED);
-	SET(k, row5, col13, RED);
-	SET(k, row5, col13, RED);
-	SET(k, row5, col12, RED);
-	SET(k, row5, col12, RED);
-	SET(k, row5, col11, RED);
-	SET(k, row5, col11, RED);
-	SET(k, row5, col10, RED);
-	SET(k, row5, col10, RED);
-	SET(k, row5, col09, RED);
-	SET(k, row5, col09, RED);
-	SET(k, row5, col08, RED);
-	SET(k, row5, col08, RED);
-	SET(k, row5, col07, RED);
-	SET(k, row5, col07, RED);
-	SET(k, row5, col06, RED);
-	SET(k, row5, col06, RED);
-	SET(k, row5, col05, RED);
-	SET(k, row5, col05, RED);
-	SET(k, row5, col04, RED);
-	SET(k, row5, col04, RED);
-	SET(k, row5, col03, RED);
-	SET(k, row5, col03, RED);
-	SET(k, row5, col02, RED);
-	SET(k, row5, col02, RED);
-	SET(k, row5, col01, RED);
-	SET(k, row5, col01, RED);
+	// k = 144
+	SET(k, row05, col17, RED);
+	SET(k, row05, col17, RED);
+	SET(k, row05, col16, RED);
+	SET(k, row05, col16, RED);
+	SET(k, row05, col15, RED);
+	SET(k, row05, col15, RED);
+	SET(k, row05, col14, RED);
+	SET(k, row05, col14, RED);
+	SET(k, row05, col13, RED);
+	SET(k, row05, col13, RED);
+	SET(k, row05, col12, RED);
+	SET(k, row05, col12, RED);
+	SET(k, row05, col11, RED);
+	SET(k, row05, col11, RED);
+	SET(k, row05, col10, RED);
+	SET(k, row05, col10, RED);
+	SET(k, row05, col09, RED);
+	SET(k, row05, col09, RED);
+	SET(k, row05, col08, RED);
+	SET(k, row05, col08, RED);
+	SET(k, row05, col07, RED);
+	SET(k, row05, col07, RED);
+	SET(k, row05, col06, RED);
+	SET(k, row05, col06, RED);
+	SET(k, row05, col05, RED);
+	SET(k, row05, col05, RED);
+	SET(k, row05, col04, RED);
+	SET(k, row05, col04, RED);
+	SET(k, row05, col03, RED);
+	SET(k, row05, col03, RED);
+	SET(k, row05, col02, RED);
+	SET(k, row05, col02, RED);
+	SET(k, row05, col01, RED);
+	SET(k, row05, col01, RED);
 
 	// row 4
-	SET(k, row4, col01, RED);
-	SET(k, row4, col01, RED);
-	SET(k, row4, col02, RED);
-	SET(k, row4, col02, RED);
-	SET(k, row4, col03, RED);
-	SET(k, row4, col03, RED);
-	SET(k, row4, col04, RED);
-	SET(k, row4, col04, RED);
-	SET(k, row4, col05, RED);
-	SET(k, row4, col05, RED);
-	SET(k, row4, col06, RED);
-	SET(k, row4, col06, RED);
-	SET(k, row4, col07, RED);
-	SET(k, row4, col07, RED);
-	SET(k, row4, col08, RED);
-	SET(k, row4, col08, RED);
-	SET(k, row4, col09, RED);
-	SET(k, row4, col09, RED);
-	SET(k, row4, col10, RED);
-	SET(k, row4, col10, RED);
-	SET(k, row4, col11, RED);
-	SET(k, row4, col11, RED);
-	SET(k, row4, col12, RED);
-	SET(k, row4, col12, RED);
-	SET(k, row4, col13, RED);
-	SET(k, row4, col13, RED);
-	SET(k, row4, col14, RED);
-	SET(k, row4, col14, RED);
-	SET(k, row4, col15, RED);
-	SET(k, row4, col15, RED);
-	SET(k, row4, col16, RED);
-	SET(k, row4, col16, RED);
-	SET(k, row4, col17, RED);
-	SET(k, row4, col17, RED);
+	SET(k, row04, col01, RED);
+	SET(k, row04, col01, RED);
+	SET(k, row04, col02, RED);
+	SET(k, row04, col02, RED);
+	SET(k, row04, col03, RED);
+	SET(k, row04, col03, RED);
+	SET(k, row04, col04, RED);
+	SET(k, row04, col04, RED);
+	SET(k, row04, col05, RED);
+	SET(k, row04, col05, RED);
+	SET(k, row04, col06, RED);
+	SET(k, row04, col06, RED);
+	SET(k, row04, col07, RED);
+	SET(k, row04, col07, RED);
+	SET(k, row04, col08, RED);
+	SET(k, row04, col08, RED);
+	SET(k, row04, col09, RED);
+	SET(k, row04, col09, RED);
+	SET(k, row04, col10, RED);
+	SET(k, row04, col10, RED);
+	SET(k, row04, col11, RED);
+	SET(k, row04, col11, RED);
+	SET(k, row04, col12, RED);
+	SET(k, row04, col12, RED);
+	SET(k, row04, col13, RED);
+	SET(k, row04, col13, RED);
+	SET(k, row04, col14, RED);
+	SET(k, row04, col14, RED);
+	SET(k, row04, col15, RED);
+	SET(k, row04, col15, RED);
+	SET(k, row04, col16, RED);
+	SET(k, row04, col16, RED);
+	SET(k, row04, col17, RED);
+	SET(k, row04, col17, RED);
 
-	SET(k, row4, col17, RED);
-	SET(k, row4, col17, RED);
-	SET(k, row4, col16, RED);
-	SET(k, row4, col16, RED);
-	SET(k, row4, col15, RED);
-	SET(k, row4, col15, RED);
-	SET(k, row4, col14, RED);
-	SET(k, row4, col14, RED);
-	SET(k, row4, col13, RED);
-	SET(k, row4, col13, RED);
-	SET(k, row4, col12, RED);
-	SET(k, row4, col12, RED);
-	SET(k, row4, col11, RED);
-	SET(k, row4, col11, RED);
-	SET(k, row4, col10, RED);
-	SET(k, row4, col10, RED);
-	SET(k, row4, col09, RED);
-	SET(k, row4, col09, RED);
-	SET(k, row4, col08, RED);
-	SET(k, row4, col08, RED);
-	SET(k, row4, col07, RED);
-	SET(k, row4, col07, RED);
-	SET(k, row4, col06, RED);
-	SET(k, row4, col06, RED);
-	SET(k, row4, col05, RED);
-	SET(k, row4, col05, RED);
-	SET(k, row4, col04, RED);
-	SET(k, row4, col04, RED);
-	SET(k, row4, col03, RED);
-	SET(k, row4, col03, RED);
-	SET(k, row4, col02, RED);
-	SET(k, row4, col02, RED);
-	SET(k, row4, col01, RED);
-	SET(k, row4, col01, RED);
+	SET(k, row04, col17, RED);
+	SET(k, row04, col17, RED);
+	SET(k, row04, col16, RED);
+	SET(k, row04, col16, RED);
+	SET(k, row04, col15, RED);
+	SET(k, row04, col15, RED);
+	SET(k, row04, col14, RED);
+	SET(k, row04, col14, RED);
+	SET(k, row04, col13, RED);
+	SET(k, row04, col13, RED);
+	SET(k, row04, col12, RED);
+	SET(k, row04, col12, RED);
+	SET(k, row04, col11, RED);
+	SET(k, row04, col11, RED);
+	SET(k, row04, col10, RED);
+	SET(k, row04, col10, RED);
+	SET(k, row04, col09, RED);
+	SET(k, row04, col09, RED);
+	SET(k, row04, col08, RED);
+	SET(k, row04, col08, RED);
+	SET(k, row04, col07, RED);
+	SET(k, row04, col07, RED);
+	SET(k, row04, col06, RED);
+	SET(k, row04, col06, RED);
+	SET(k, row04, col05, RED);
+	SET(k, row04, col05, RED);
+	SET(k, row04, col04, RED);
+	SET(k, row04, col04, RED);
+	SET(k, row04, col03, RED);
+	SET(k, row04, col03, RED);
+	SET(k, row04, col02, RED);
+	SET(k, row04, col02, RED);
+	SET(k, row04, col01, RED);
+	SET(k, row04, col01, RED);
 
 	// row 3
-	SET(k, row3, col01, GREEN);
-	SET(k, row3, col01, GREEN);
-	SET(k, row3, col02, GREEN);
-	SET(k, row3, col02, GREEN);
-	SET(k, row3, col03, GREEN);
-	SET(k, row3, col03, GREEN);
-	SET(k, row3, col04, GREEN);
-	SET(k, row3, col04, GREEN);
-	SET(k, row3, col05, GREEN);
-	SET(k, row3, col05, GREEN);
-	SET(k, row3, col06, GREEN);
-	SET(k, row3, col06, GREEN);
-	SET(k, row3, col07, GREEN);
-	SET(k, row3, col07, GREEN);
-	SET(k, row3, col08, GREEN);
-	SET(k, row3, col08, GREEN);
-	SET(k, row3, col09, GREEN);
-	SET(k, row3, col09, GREEN);
-	SET(k, row3, col10, GREEN);
-	SET(k, row3, col10, GREEN);
-	SET(k, row3, col11, GREEN);
-	SET(k, row3, col11, GREEN);
-	SET(k, row3, col12, GREEN);
-	SET(k, row3, col12, GREEN);
-	SET(k, row3, col13, GREEN);
-	SET(k, row3, col13, GREEN);
-	SET(k, row3, col14, GREEN);
-	SET(k, row3, col14, GREEN);
-	SET(k, row3, col15, GREEN);
-	SET(k, row3, col15, GREEN);
-	SET(k, row3, col16, GREEN);
-	SET(k, row3, col16, GREEN);
-	SET(k, row3, col17, GREEN);
-	SET(k, row3, col17, GREEN);
+	SET(k, row03, col01, GREEN);
+	SET(k, row03, col01, GREEN);
+	SET(k, row03, col02, GREEN);
+	SET(k, row03, col02, GREEN);
+	SET(k, row03, col03, GREEN);
+	SET(k, row03, col03, GREEN);
+	SET(k, row03, col04, GREEN);
+	SET(k, row03, col04, GREEN);
+	SET(k, row03, col05, GREEN);
+	SET(k, row03, col05, GREEN);
+	SET(k, row03, col06, GREEN);
+	SET(k, row03, col06, GREEN);
+	SET(k, row03, col07, GREEN);
+	SET(k, row03, col07, GREEN);
+	SET(k, row03, col08, GREEN);
+	SET(k, row03, col08, GREEN);
+	SET(k, row03, col09, GREEN);
+	SET(k, row03, col09, GREEN);
+	SET(k, row03, col10, GREEN);
+	SET(k, row03, col10, GREEN);
+	SET(k, row03, col11, GREEN);
+	SET(k, row03, col11, GREEN);
+	SET(k, row03, col12, GREEN);
+	SET(k, row03, col12, GREEN);
+	SET(k, row03, col13, GREEN);
+	SET(k, row03, col13, GREEN);
+	SET(k, row03, col14, GREEN);
+	SET(k, row03, col14, GREEN);
+	SET(k, row03, col15, GREEN);
+	SET(k, row03, col15, GREEN);
+	SET(k, row03, col16, GREEN);
+	SET(k, row03, col16, GREEN);
+	SET(k, row03, col17, GREEN);
+	SET(k, row03, col17, GREEN);
 
-	SET(k, row3, col17, GREEN);
-	SET(k, row3, col17, GREEN);
-	SET(k, row3, col16, GREEN);
-	SET(k, row3, col16, GREEN);
-	SET(k, row3, col15, GREEN);
-	SET(k, row3, col15, GREEN);
-	SET(k, row3, col14, GREEN);
-	SET(k, row3, col14, GREEN);
-	SET(k, row3, col13, GREEN);
-	SET(k, row3, col13, GREEN);
-	SET(k, row3, col12, GREEN);
-	SET(k, row3, col12, GREEN);
-	SET(k, row3, col11, GREEN);
-	SET(k, row3, col11, GREEN);
-	SET(k, row3, col10, GREEN);
-	SET(k, row3, col10, GREEN);
-	SET(k, row3, col09, GREEN);
-	SET(k, row3, col09, GREEN);
-	SET(k, row3, col08, GREEN);
-	SET(k, row3, col08, GREEN);
-	SET(k, row3, col07, GREEN);
-	SET(k, row3, col07, GREEN);
-	SET(k, row3, col06, GREEN);
-	SET(k, row3, col06, GREEN);
-	SET(k, row3, col05, GREEN);
-	SET(k, row3, col05, GREEN);
-	SET(k, row3, col04, GREEN);
-	SET(k, row3, col04, GREEN);
-	SET(k, row3, col03, GREEN);
-	SET(k, row3, col03, GREEN);
-	SET(k, row3, col02, GREEN);
-	SET(k, row3, col02, GREEN);
-	SET(k, row3, col01, GREEN);
-	SET(k, row3, col01, GREEN);
+	SET(k, row03, col17, GREEN);
+	SET(k, row03, col17, GREEN);
+	SET(k, row03, col16, GREEN);
+	SET(k, row03, col16, GREEN);
+	SET(k, row03, col15, GREEN);
+	SET(k, row03, col15, GREEN);
+	SET(k, row03, col14, GREEN);
+	SET(k, row03, col14, GREEN);
+	SET(k, row03, col13, GREEN);
+	SET(k, row03, col13, GREEN);
+	SET(k, row03, col12, GREEN);
+	SET(k, row03, col12, GREEN);
+	SET(k, row03, col11, GREEN);
+	SET(k, row03, col11, GREEN);
+	SET(k, row03, col10, GREEN);
+	SET(k, row03, col10, GREEN);
+	SET(k, row03, col09, GREEN);
+	SET(k, row03, col09, GREEN);
+	SET(k, row03, col08, GREEN);
+	SET(k, row03, col08, GREEN);
+	SET(k, row03, col07, GREEN);
+	SET(k, row03, col07, GREEN);
+	SET(k, row03, col06, GREEN);
+	SET(k, row03, col06, GREEN);
+	SET(k, row03, col05, GREEN);
+	SET(k, row03, col05, GREEN);
+	SET(k, row03, col04, GREEN);
+	SET(k, row03, col04, GREEN);
+	SET(k, row03, col03, GREEN);
+	SET(k, row03, col03, GREEN);
+	SET(k, row03, col02, GREEN);
+	SET(k, row03, col02, GREEN);
+	SET(k, row03, col01, GREEN);
+	SET(k, row03, col01, GREEN);
 
 	// row 2
-	SET(k, row2, col01, RED);
-	SET(k, row2, col01, RED);
-	SET(k, row2, col02, RED);
-	SET(k, row2, col02, RED);
-	SET(k, row2, col03, RED);
-	SET(k, row2, col03, RED);
-	SET(k, row2, col04, RED);
-	SET(k, row2, col04, RED);
-	SET(k, row2, col05, RED);
-	SET(k, row2, col05, RED);
-	SET(k, row2, col06, RED);
-	SET(k, row2, col06, RED);
-	SET(k, row2, col07, RED);
-	SET(k, row2, col07, RED);
-	SET(k, row2, col08, RED);
-	SET(k, row2, col08, RED);
-	SET(k, row2, col09, RED);
-	SET(k, row2, col09, RED);
-	SET(k, row2, col10, RED);
-	SET(k, row2, col10, RED);
-	SET(k, row2, col11, RED);
-	SET(k, row2, col11, RED);
-	SET(k, row2, col12, RED);
-	SET(k, row2, col12, RED);
-	SET(k, row2, col13, RED);
-	SET(k, row2, col13, RED);
-	SET(k, row2, col14, RED);
-	SET(k, row2, col14, RED);
-	SET(k, row2, col15, RED);
-	SET(k, row2, col15, RED);
-	SET(k, row2, col16, RED);
-	SET(k, row2, col16, RED);
-	SET(k, row2, col17, RED);
-	SET(k, row2, col17, RED);
+	SET(k, row02, col01, RED);
+	SET(k, row02, col01, RED);
+	SET(k, row02, col02, RED);
+	SET(k, row02, col02, RED);
+	SET(k, row02, col03, RED);
+	SET(k, row02, col03, RED);
+	SET(k, row02, col04, RED);
+	SET(k, row02, col04, RED);
+	SET(k, row02, col05, RED);
+	SET(k, row02, col05, RED);
+	SET(k, row02, col06, RED);
+	SET(k, row02, col06, RED);
+	SET(k, row02, col07, RED);
+	SET(k, row02, col07, RED);
+	SET(k, row02, col08, RED);
+	SET(k, row02, col08, RED);
+	SET(k, row02, col09, RED);
+	SET(k, row02, col09, RED);
+	SET(k, row02, col10, RED);
+	SET(k, row02, col10, RED);
+	SET(k, row02, col11, RED);
+	SET(k, row02, col11, RED);
+	SET(k, row02, col12, RED);
+	SET(k, row02, col12, RED);
+	SET(k, row02, col13, RED);
+	SET(k, row02, col13, RED);
+	SET(k, row02, col14, RED);
+	SET(k, row02, col14, RED);
+	SET(k, row02, col15, RED);
+	SET(k, row02, col15, RED);
+	SET(k, row02, col16, RED);
+	SET(k, row02, col16, RED);
+	SET(k, row02, col17, RED);
+	SET(k, row02, col17, RED);
 
-	SET(k, row2, col17, RED);
-	SET(k, row2, col17, RED);
-	SET(k, row2, col16, RED);
-	SET(k, row2, col16, RED);
-	SET(k, row2, col15, RED);
-	SET(k, row2, col15, RED);
-	SET(k, row2, col14, RED);
-	SET(k, row2, col14, RED);
-	SET(k, row2, col13, RED);
-	SET(k, row2, col13, RED);
-	SET(k, row2, col12, RED);
-	SET(k, row2, col12, RED);
-	SET(k, row2, col11, RED);
-	SET(k, row2, col11, RED);
-	SET(k, row2, col10, RED);
-	SET(k, row2, col10, RED);
-	SET(k, row2, col09, RED);
-	SET(k, row2, col09, RED);
-	SET(k, row2, col08, RED);
-	SET(k, row2, col08, RED);
-	SET(k, row2, col07, RED);
-	SET(k, row2, col07, RED);
-	SET(k, row2, col06, RED);
-	SET(k, row2, col06, RED);
-	SET(k, row2, col05, RED);
-	SET(k, row2, col05, RED);
-	SET(k, row2, col04, RED);
-	SET(k, row2, col04, RED);
-	SET(k, row2, col03, RED);
-	SET(k, row2, col03, RED);
-	SET(k, row2, col02, RED);
-	SET(k, row2, col02, RED);
-	SET(k, row2, col01, RED);
-	SET(k, row2, col01, RED);
+	SET(k, row02, col17, RED);
+	SET(k, row02, col17, RED);
+	SET(k, row02, col16, RED);
+	SET(k, row02, col16, RED);
+	SET(k, row02, col15, RED);
+	SET(k, row02, col15, RED);
+	SET(k, row02, col14, RED);
+	SET(k, row02, col14, RED);
+	SET(k, row02, col13, RED);
+	SET(k, row02, col13, RED);
+	SET(k, row02, col12, RED);
+	SET(k, row02, col12, RED);
+	SET(k, row02, col11, RED);
+	SET(k, row02, col11, RED);
+	SET(k, row02, col10, RED);
+	SET(k, row02, col10, RED);
+	SET(k, row02, col09, RED);
+	SET(k, row02, col09, RED);
+	SET(k, row02, col08, RED);
+	SET(k, row02, col08, RED);
+	SET(k, row02, col07, RED);
+	SET(k, row02, col07, RED);
+	SET(k, row02, col06, RED);
+	SET(k, row02, col06, RED);
+	SET(k, row02, col05, RED);
+	SET(k, row02, col05, RED);
+	SET(k, row02, col04, RED);
+	SET(k, row02, col04, RED);
+	SET(k, row02, col03, RED);
+	SET(k, row02, col03, RED);
+	SET(k, row02, col02, RED);
+	SET(k, row02, col02, RED);
+	SET(k, row02, col01, RED);
+	SET(k, row02, col01, RED);
 
 	// row 1
-	SET(k, row1, col01, RED);
-	SET(k, row1, col01, RED);
-	SET(k, row1, col02, RED);
-	SET(k, row1, col02, RED);
-	SET(k, row1, col03, RED);
-	SET(k, row1, col03, RED);
-	SET(k, row1, col04, RED);
-	SET(k, row1, col04, RED);
-	SET(k, row1, col05, RED);
-	SET(k, row1, col05, RED);
-	SET(k, row1, col06, RED);
-	SET(k, row1, col06, RED);
-	SET(k, row1, col07, RED);
-	SET(k, row1, col07, RED);
-	SET(k, row1, col08, GREEN);
-	SET(k, row1, col08, GREEN);
-	SET(k, row1, col09, RED);
-	SET(k, row1, col09, RED);
-	SET(k, row1, col10, RED);
-	SET(k, row1, col10, RED);
-	SET(k, row1, col11, RED);
-	SET(k, row1, col11, RED);
-	SET(k, row1, col12, RED);
-	SET(k, row1, col12, RED);
-	SET(k, row1, col13, RED);
-	SET(k, row1, col13, RED);
-	SET(k, row1, col14, RED);
-	SET(k, row1, col14, RED);
-	SET(k, row1, col15, RED);
-	SET(k, row1, col15, RED);
-	SET(k, row1, col16, RED);
-	SET(k, row1, col16, RED);
-	SET(k, row1, col17, RED);
-	SET(k, row1, col17, RED);
+	SET(k, row01, col01, RED);
+	SET(k, row01, col01, RED);
+	SET(k, row01, col02, RED);
+	SET(k, row01, col02, RED);
+	SET(k, row01, col03, RED);
+	SET(k, row01, col03, RED);
+	SET(k, row01, col04, RED);
+	SET(k, row01, col04, RED);
+	SET(k, row01, col05, RED);
+	SET(k, row01, col05, RED);
+	SET(k, row01, col06, RED);
+	SET(k, row01, col06, RED);
+	SET(k, row01, col07, RED);
+	SET(k, row01, col07, RED);
+	SET(k, row01, col08, GREEN);
+	SET(k, row01, col08, GREEN);
+	SET(k, row01, col09, RED);
+	SET(k, row01, col09, RED);
+	SET(k, row01, col10, RED);
+	SET(k, row01, col10, RED);
+	SET(k, row01, col11, RED);
+	SET(k, row01, col11, RED);
+	SET(k, row01, col12, RED);
+	SET(k, row01, col12, RED);
+	SET(k, row01, col13, RED);
+	SET(k, row01, col13, RED);
+	SET(k, row01, col14, RED);
+	SET(k, row01, col14, RED);
+	SET(k, row01, col15, RED);
+	SET(k, row01, col15, RED);
+	SET(k, row01, col16, RED);
+	SET(k, row01, col16, RED);
+	SET(k, row01, col17, RED);
+	SET(k, row01, col17, RED);
 
-	SET(k, row1, col17, RED);
-	SET(k, row1, col17, RED);
-	SET(k, row1, col16, RED);
-	SET(k, row1, col16, RED);
-	SET(k, row1, col15, RED);
-	SET(k, row1, col15, RED);
-	SET(k, row1, col14, RED);
-	SET(k, row1, col14, RED);
-	SET(k, row1, col13, RED);
-	SET(k, row1, col13, RED);
-	SET(k, row1, col12, RED);
-	SET(k, row1, col12, RED);
-	SET(k, row1, col11, RED);
-	SET(k, row1, col11, RED);
-	SET(k, row1, col10, RED);
-	SET(k, row1, col10, RED);
-	SET(k, row1, col09, GREEN);
-	SET(k, row1, col09, GREEN);
-	SET(k, row1, col08, RED);
-	SET(k, row1, col08, RED);
-	SET(k, row1, col07, RED);
-	SET(k, row1, col07, RED);
-	SET(k, row1, col06, RED);
-	SET(k, row1, col06, RED);
-	SET(k, row1, col05, RED);
-	SET(k, row1, col05, RED);
-	SET(k, row1, col04, RED);
-	SET(k, row1, col04, RED);
-	SET(k, row1, col03, RED);
-	SET(k, row1, col03, RED);
-	SET(k, row1, col02, RED);
-	SET(k, row1, col02, RED);
-	SET(k, row1, col01, RED);
-	SET(k, row1, col01, RED);
+	SET(k, row01, col17, RED);
+	SET(k, row01, col17, RED);
+	SET(k, row01, col16, RED);
+	SET(k, row01, col16, RED);
+	SET(k, row01, col15, RED);
+	SET(k, row01, col15, RED);
+	SET(k, row01, col14, RED);
+	SET(k, row01, col14, RED);
+	SET(k, row01, col13, RED);
+	SET(k, row01, col13, RED);
+	SET(k, row01, col12, RED);
+	SET(k, row01, col12, RED);
+	SET(k, row01, col11, RED);
+	SET(k, row01, col11, RED);
+	SET(k, row01, col10, RED);
+	SET(k, row01, col10, RED);
+	SET(k, row01, col09, GREEN);
+	SET(k, row01, col09, GREEN);
+	SET(k, row01, col08, RED);
+	SET(k, row01, col08, RED);
+	SET(k, row01, col07, RED);
+	SET(k, row01, col07, RED);
+	SET(k, row01, col06, RED);
+	SET(k, row01, col06, RED);
+	SET(k, row01, col05, RED);
+	SET(k, row01, col05, RED);
+	SET(k, row01, col04, RED);
+	SET(k, row01, col04, RED);
+	SET(k, row01, col03, RED);
+	SET(k, row01, col03, RED);
+	SET(k, row01, col02, RED);
+	SET(k, row01, col02, RED);
+	SET(k, row01, col01, RED);
+	SET(k, row01, col01, RED);
 }
 
 void display_reset(void) {
 	uint16_t i;
-	// Decay over time.
+	
 	for (i = 0; i < LED_COUNT; i++) {
-		uint8_t val = buffer[i];
-
-		if (val > 32) {
-			val -= 8;
-		} else {
-			val = 0;
-		}
-
-		buffer[i] = val;
+		LEDS[i] = 0;
 	}
-}
-
-uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max) {
-	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 void display_render(void) {
-	uint16_t i;
-	
-	for (i = 0; i < LED_COUNT; i++) {
-		uint8_t val = buffer[i];
-//		if (val > 255) val = 255; // Clamp to 255
-
-		if (i >= 246 && i <= 313) {
-			// This is the green band.
-			LEDS[i] = val << 8;
-		} else if (i == 228 || i == 229 || i == 194 || i == 195 || i == 160 || i == 161 || i == 126 || i == 127 ) {
-			LEDS[i] = val << 8;
-		} else if (i == 330 || i == 331 || i == 364 || i == 365 || i == 398 || i == 399 || i == 432 || i == 433) {
-			LEDS[i] = val << 8;
-		} else {
-			LEDS[i] = val << 16;
-		}
-	}
-
 	leds_render();
 }
