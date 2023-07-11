@@ -215,8 +215,8 @@ int spi_reader(char *description) {
 		}
 
 		if (diff.tv_sec > 1 || diff.tv_usec > 16666) { // 60 frame/sec
-//display_reset();
-}
+			//display_reset();
+		}
 
 		ft4222Status = FT4222_SPISlave_Read(ftHandle, rxBuffer, bytesAvailable, &bytesRead);
 

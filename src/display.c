@@ -216,8 +216,8 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row05, col07, RED);
 	SET(k, row05, col08, RED);
 	SET(k, row05, col08, RED);
-	SET(k, row05, col09, RED);
-	SET(k, row05, col09, RED);
+	SET(k, row05, col09, GREEN);
+	SET(k, row05, col09, GREEN);
 	SET(k, row05, col10, RED);
 	SET(k, row05, col10, RED);
 	SET(k, row05, col11, RED);
@@ -252,8 +252,8 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row05, col11, RED);
 	SET(k, row05, col10, RED);
 	SET(k, row05, col10, RED);
-	SET(k, row05, col09, RED);
-	SET(k, row05, col09, RED);
+	SET(k, row05, col09, GREEN);
+	SET(k, row05, col09, GREEN);
 	SET(k, row05, col08, RED);
 	SET(k, row05, col08, RED);
 	SET(k, row05, col07, RED);
@@ -288,8 +288,8 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row04, col07, RED);
 	SET(k, row04, col08, RED);
 	SET(k, row04, col08, RED);
-	SET(k, row04, col09, RED);
-	SET(k, row04, col09, RED);
+	SET(k, row04, col09, GREEN);
+	SET(k, row04, col09, GREEN);
 	SET(k, row04, col10, RED);
 	SET(k, row04, col10, RED);
 	SET(k, row04, col11, RED);
@@ -323,8 +323,8 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row04, col11, RED);
 	SET(k, row04, col10, RED);
 	SET(k, row04, col10, RED);
-	SET(k, row04, col09, RED);
-	SET(k, row04, col09, RED);
+	SET(k, row04, col09, GREEN);
+	SET(k, row04, col09, GREEN);
 	SET(k, row04, col08, RED);
 	SET(k, row04, col08, RED);
 	SET(k, row04, col07, RED);
@@ -430,8 +430,8 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row02, col07, RED);
 	SET(k, row02, col08, RED);
 	SET(k, row02, col08, RED);
-	SET(k, row02, col09, RED);
-	SET(k, row02, col09, RED);
+	SET(k, row02, col09, GREEN);
+	SET(k, row02, col09, GREEN);
 	SET(k, row02, col10, RED);
 	SET(k, row02, col10, RED);
 	SET(k, row02, col11, RED);
@@ -465,8 +465,8 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row02, col11, RED);
 	SET(k, row02, col10, RED);
 	SET(k, row02, col10, RED);
-	SET(k, row02, col09, RED);
-	SET(k, row02, col09, RED);
+	SET(k, row02, col09, GREEN);
+	SET(k, row02, col09, GREEN);
 	SET(k, row02, col08, RED);
 	SET(k, row02, col08, RED);
 	SET(k, row02, col07, RED);
@@ -499,10 +499,10 @@ void display_update(uint8_t q1, uint8_t q2, uint8_t q3, uint8_t q4) {
 	SET(k, row01, col06, RED);
 	SET(k, row01, col07, RED);
 	SET(k, row01, col07, RED);
-	SET(k, row01, col08, GREEN);
-	SET(k, row01, col08, GREEN);
-	SET(k, row01, col09, RED);
-	SET(k, row01, col09, RED);
+	SET(k, row01, col08, RED);
+	SET(k, row01, col08, RED);
+	SET(k, row01, col09, GREEN);
+	SET(k, row01, col09, GREEN);
 	SET(k, row01, col10, RED);
 	SET(k, row01, col10, RED);
 	SET(k, row01, col11, RED);
@@ -562,6 +562,8 @@ void display_reset(void) {
 	for (i = 0; i < LED_COUNT; i++) {
 		LEDS[i] = 0;
 	}
+
+	leds_render();
 }
 
 void display_render(void) {
